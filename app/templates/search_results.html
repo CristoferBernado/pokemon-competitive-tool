@@ -1,0 +1,111 @@
+{% extends "base.html" %}
+
+{% block title %}Resultados da Busca{% endblock %}
+
+{% block content %}
+<h2>{% if query %}Resultados para: "{{ query }}"{% else %}Busca{% endif %}</h2>
+{% if query %}
+<p class="text-muted">Detectado como busca por
+    {% if search_type == 'name' %}nome
+    {% elif search_type == 'id' %}número da Pokédex
+    {% else %}tipo
+    {% endif %}
+    {% if type_search_frontend_pagination and type_search_total %}
+    — <strong>{{ type_search_total }}</strong> Pokémon no total <span class="badge bg-info text-dark">paginação no navegador</span>
+    {% elif pagination %}
+    — <strong>{{ pagination.total }}</strong> Pokémon no total
+    {% endif %}
+</p>
+{% endif %}
+
+{% if type_search_frontend_pagination and pokemons_data is not none %}
+<script type="application/json" id="type-search-bootstrap">{{ {
+    'items': pokemons_data,
+    'perPage': per_page,
+    'initialPage': initial_page,
+    'query': query
+} | tojson }}</script>
+<div id="search-results-root" class="row mt-4 search-results"></div>
+<nav id="search-pagination-root" class="mt-4 d-flex justify-content-center d-none" aria-label="Paginação"></nav>
+<p id="search-pagination-summary" class="text-center text-muted small mt-2 mb-0 d-none"></p>
+
+{% elif pokemons %}
+<div class="row mt-4 search-results">
+    {% for pokemon in pokemons %}
+    <div class="col-6 col-md-4 col-lg-3 mb-4">
+        <a href="{{ url_for('main.pokemon_detail', pokemon_id=pokemon.id) }}" class="pokemon-card">
+            <div class="card h-100">
+                {% if pokemon.official_artwork_url %}
+                <img src="{{ pokemon.official_artwork_url }}" class="card-img-top" alt="{{ pokemon.name }}">
+                {% elif pokemon.sprite_url %}
+                <img src="{{ pokemon.sprite_url }}" class="card-img-top" alt="{{ pokemon.name }}">
+                {% else %}
+                <div class="card-img-top d-flex align-items-center justify-content-center bg-light text-muted">?</div>
+                {% endif %}
+                <div class="card-body">
+                    <div class="pokemon-id">{{ pokemon.formatted_id }}</div>
+                    <h5 class="pokemon-name">{{ pokemon.name }}</h5>
+                    <div class="pokemon-types-container">
+                        {% for type in pokemon.types %}
+                        <span class="type-badge type-{{ type }}">{{ type|capitalize }}</span>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+        </a>
+    </div>
+    {% endfor %}
+</div>
+
+{% if pagination and pagination.total_pages > 1 %}
+<nav class="mt-4 d-flex justify-content-center" aria-label="Paginação">
+    <ul class="pagination flex-wrap justify-content-center mb-0">
+        <li class="page-item {% if not pagination.has_prev %}disabled{% endif %}">
+            {% if pagination.has_prev %}
+            <a class="page-link" href="{{ url_for('main.search', q=query, page=pagination.prev_num) }}">Anterior</a>
+            {% else %}
+            <span class="page-link">Anterior</span>
+            {% endif %}
+        </li>
+        {% for p in pagination.page_numbers %}
+        <li class="page-item {% if p == pagination.page %}active{% endif %}">
+            <a class="page-link" href="{{ url_for('main.search', q=query, page=p) }}">{{ p }}</a>
+        </li>
+        {% endfor %}
+        <li class="page-item {% if not pagination.has_next %}disabled{% endif %}">
+            {% if pagination.has_next %}
+            <a class="page-link" href="{{ url_for('main.search', q=query, page=pagination.next_num) }}">Próxima</a>
+            {% else %}
+            <span class="page-link">Próxima</span>
+            {% endif %}
+        </li>
+    </ul>
+</nav>
+<p class="text-center text-muted small mt-2 mb-0">
+    Página {{ pagination.page }} de {{ pagination.total_pages }} ({{ pagination.per_page }} por página)
+</p>
+{% endif %}
+
+{% else %}
+<div class="alert alert-info mt-4">
+    {% if query %}
+    Nenhum Pokémon encontrado para "{{ query }}".
+    {% if search_type == 'type' %}
+    Use o nome do tipo em inglês (fire, water, poison, ghost…), como na PokeAPI.
+    {% else %}
+    Tente outro nome, número da Pokédex ou tipo.
+    {% endif %}
+    {% else %}
+    Digite um termo na busca para começar.
+    {% endif %}
+</div>
+{% endif %}
+
+<a href="{{ url_for('main.index') }}" class="btn btn-secondary mt-3">Nova Busca</a>
+{% endblock %}
+
+{% block scripts %}
+{% if type_search_frontend_pagination and pokemons_data is not none %}
+<script src="{{ url_for('static', filename='js/type_search_pagination.js') }}"></script>
+{% endif %}
+{% endblock %}

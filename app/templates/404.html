@@ -1,0 +1,12 @@
+{% extends "base.html" %}
+
+{% block title %}Página Não Encontrada{% endblock %}
+
+{% block content %}
+<div class="text-center mt-5">
+    <h1 class="display-1">404</h1>
+    <h2>Pokémon não encontrado!</h2>
+    <p class="lead">O Pokémon que você está procurando não existe na Pokédex.</p>
+    <a href="{{ url_for('main.index') }}" class="btn btn-danger mt-3">Voltar para o Início</a>
+</div>
+{% endblock %}

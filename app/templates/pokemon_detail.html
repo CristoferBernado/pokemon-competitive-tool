@@ -1,0 +1,106 @@
+{% extends "base.html" %}
+
+{% block title %}{{ pokemon.name }} - Detalhes{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-md-4">
+        <div class="card">
+            {% if pokemon.official_artwork_url %}
+            <img src="{{ pokemon.official_artwork_url }}" class="card-img-top" alt="{{ pokemon.name }}">
+            {% else %}
+            <div class="card-img-top bg-light d-flex align-items-center justify-content-center text-muted detail-art-placeholder">
+                Sem arte oficial
+            </div>
+            {% endif %}
+            <div class="card-body text-center">
+                <h2>{{ pokemon.name }}</h2>
+                <h6 class="pokemon-id">{{ pokemon.formatted_id }}</h6>
+                {% if pokemon.generation %}
+                <p class="mb-2"><span class="badge bg-secondary">Geração {{ pokemon.generation }}ª</span></p>
+                {% endif %}
+                <p class="text-muted small mb-2 mt-3">Tipos</p>
+                <div class="pokemon-types mb-3">
+                    {% for type in pokemon.types %}
+                    <span class="type-badge type-{{ type }}">{{ type|capitalize }}</span>
+                    {% endfor %}
+                </div>
+                <p><strong>Altura:</strong> {{ pokemon.height }}m</p>
+                <p><strong>Peso:</strong> {{ pokemon.weight }}kg</p>
+                <p><strong>Experiência Base:</strong> {{ pokemon.base_experience }}</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-8">
+        <div class="card">
+            <div class="card-header">
+                <h4>Estatísticas Base</h4>
+            </div>
+            <div class="card-body">
+                {% if stats %}
+                <div class="stats-container">
+                    <div class="stat-item mb-3">
+                        <label>HP: {{ stats.hp }}</label>
+                        <div class="progress">
+                            <div class="progress-bar bg-success" style="width: {{ (stats.hp / 255) * 100 }}%"></div>
+                        </div>
+                    </div>
+                    <div class="stat-item mb-3">
+                        <label>Ataque: {{ stats.attack }}</label>
+                        <div class="progress">
+                            <div class="progress-bar bg-danger" style="width: {{ (stats.attack / 255) * 100 }}%"></div>
+                        </div>
+                    </div>
+                    <div class="stat-item mb-3">
+                        <label>Defesa: {{ stats.defense }}</label>
+                        <div class="progress">
+                            <div class="progress-bar bg-primary" style="width: {{ (stats.defense / 255) * 100 }}%"></div>
+                        </div>
+                    </div>
+                    <div class="stat-item mb-3">
+                        <label>Ataque Especial: {{ stats.special_attack }}</label>
+                        <div class="progress">
+                            <div class="progress-bar bg-warning" style="width: {{ (stats.special_attack / 255) * 100 }}%"></div>
+                        </div>
+                    </div>
+                    <div class="stat-item mb-3">
+                        <label>Defesa Especial: {{ stats.special_defense }}</label>
+                        <div class="progress">
+                            <div class="progress-bar bg-info" style="width: {{ (stats.special_defense / 255) * 100 }}%"></div>
+                        </div>
+                    </div>
+                    <div class="stat-item mb-3">
+                        <label>Velocidade: {{ stats.speed }}</label>
+                        <div class="progress">
+                            <div class="progress-bar bg-secondary" style="width: {{ (stats.speed / 255) * 100 }}%"></div>
+                        </div>
+                    </div>
+                </div>
+                {% endif %}
+            </div>
+        </div>
+
+        <div class="card mt-4">
+            <div class="card-header">
+                <h4>Habilidades</h4>
+            </div>
+            <div class="card-body">
+                <ul class="list-group list-group-flush">
+                    {% for ab in pokemon.abilities %}
+                    <li class="list-group-item px-0">
+                        <div class="d-flex flex-wrap align-items-center gap-2 mb-1">
+                            <strong>{{ ab.name|replace('-', ' ')|title }}</strong>
+                            {% if ab.is_hidden %}
+                            <span class="badge bg-dark">Habilidade oculta</span>
+                            {% endif %}
+                        </div>
+                        <p class="mb-0 small text-muted ability-description">{{ ab.description }}</p>
+                    </li>
+                    {% endfor %}
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
