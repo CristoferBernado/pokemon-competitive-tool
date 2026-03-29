@@ -402,3 +402,135 @@ body.pokedex-body {
 .val-2-0 { background-color: #4e9a06 !important; color: #fff !important; border-color: #4e9a06 !important; }
 .val-4-0 { background-color: #73d216 !important; color: #000 !important; border-color: #73d216 !important; }
 
+/* Teambuilder Panel Styles */
+.teambuilder-panel {
+    background-color: var(--card-bg);
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    overflow: visible; /* to allow autocomplete dropdowns to overflow */
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+}
+
+.teambuilder-header {
+    padding: 10px 15px;
+    font-weight: bold;
+    font-size: 1.1rem;
+    border-bottom: 1px solid var(--border-color);
+    border-radius: 8px 8px 0 0;
+}
+
+.tb-row {
+    display: flex;
+    align-items: stretch;
+    border-bottom: 1px solid var(--border-color);
+    position: relative;
+}
+
+.tb-row:nth-child(even) { background-color: rgba(0,0,0,0.05); }
+.tb-row:last-child { border-bottom: none; }
+
+.tb-col-header { 
+    width: 30%; 
+    padding: 12px 15px; 
+    font-weight: bold; 
+    display: flex; 
+    align-items: center; 
+    border-right: 1px solid var(--border-color);
+    text-transform: capitalize;
+}
+
+.tb-col-input { 
+    flex: 1; 
+    padding: 12px 15px; 
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+.tb-col-input input {
+    width: 100%;
+    padding: 8px 12px;
+}
+
+/* Base Coverage styling for both tables */
+.cov-panel {
+    overflow: hidden !important; 
+}
+.cov-table { 
+    width: 100%; 
+    border-collapse: collapse; 
+    background-color: var(--card-bg);
+}
+
+.cov-table th, .cov-table td { 
+    border: 1px solid rgba(128,128,128,0.2) !important; 
+    text-align: center; 
+    vertical-align: middle;
+    padding: 4px;
+    height: 35px;
+    font-weight: bold;
+}
+
+.cov-table th { 
+    background-color: rgba(0,0,0,0.1); 
+    font-size: 0.85rem;
+    color: var(--text-color);
+    border-color: var(--border-color) !important;
+}
+
+.cov-type-col { 
+    width: 90px !important; 
+    padding: 2px !important;
+}
+
+/* Custom pills for teambuilder rows */
+.cov-table .type-badge-pill {
+    margin: 0 auto;
+    width: 80px;
+    padding: 4px 0;
+    font-size: 0.70rem;
+    cursor: default;
+    border-radius: 4px;
+    display: block;
+}
+
+.cov-table td { font-size: 0.85rem; }
+
+/* Totals styling */
+.cov-table td.total-weak, .cov-table td.total-resist, .cov-table td.total-strong {
+    background-color: rgba(0,0,0,0.15);
+    color: var(--text-color);
+}
+
+/* Custom autocomplete suggestions */
+.tb-suggestions {
+    position: absolute;
+    top: 100%;
+    left: 15px;
+    right: 15px;
+    z-index: 1050;
+    max-height: 200px;
+    overflow-y: auto;
+    background-color: var(--card-bg);
+    border: 1px solid var(--kalos-cyan);
+    border-top: none;
+    border-radius: 0 0 5px 5px;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+    display: none;
+}
+
+.tb-suggestion-item {
+    padding: 10px 15px;
+    cursor: pointer;
+    border-bottom: 1px solid var(--border-color);
+    transition: background 0.2s;
+}
+
+.tb-suggestion-item:last-child {
+    border-bottom: none;
+}
+
+.tb-suggestion-item:hover, .tb-suggestion-item.active {
+    background-color: var(--kalos-cyan);
+    color: #000;
+}

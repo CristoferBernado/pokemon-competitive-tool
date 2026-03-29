@@ -1,0 +1,79 @@
+{% extends "base.html" %}
+
+{% block title %}Pokemon Teambuilder - Poketool Ecosystem{% endblock %}
+
+{% block content %}
+<div class="row">
+    <!-- Team Input Panel -->
+    <div class="col-xl-4 col-lg-5 mb-4">
+        <div class="teambuilder-panel">
+            <div class="teambuilder-header" style="background-color: #2d4576 !important; color: white !important;">
+                Team Input
+            </div>
+            <div id="team-inputs-container">
+                <!-- 6 input rows rendered by JS -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Coverage Panels -->
+    <div class="col-xl-8 col-lg-7">
+        <div class="row">
+            <!-- Defensive Coverage Panel -->
+            <div class="col-12 mb-4">
+                <div class="teambuilder-panel cov-panel">
+                    <div class="teambuilder-header text-center" style="background-color: #2d4576 !important; color: white !important;">
+                        Defensive Coverage
+                    </div>
+                    <div class="table-responsive">
+                        <table class="cov-table" id="defensive-table">
+                            <thead>
+                                <tr>
+                                    <th class="cov-type-col">Move<br>↓</th>
+                                    <th>1</th><th>2</th><th>3</th><th>4</th><th>5</th><th>6</th>
+                                    <th>Total Weak</th>
+                                    <th>Total Resist</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <!-- JS renders 18 rows -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Offensive Coverage Panel -->
+            <div class="col-12 mb-4">
+                <div class="teambuilder-panel cov-panel">
+                    <div class="teambuilder-header text-center" style="background-color: #2d4576 !important; color: white !important;">
+                        Offensive Coverage (Forte Contra)
+                    </div>
+                    <div class="table-responsive">
+                        <table class="cov-table" id="offensive-table">
+                            <thead>
+                                <tr>
+                                    <th class="cov-type-col">Defender<br>↓</th>
+                                    <th>1</th><th>2</th><th>3</th><th>4</th><th>5</th><th>6</th>
+                                    <th>Total Strong</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <!-- JS renders 18 rows -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+    const ALL_TYPES = {{ all_types | tojson | safe }};
+    const DEFENSE_CHART = {{ defense_chart | tojson | safe }};
+</script>
+<script src="{{ url_for('static', filename='js/teambuilder.js') }}"></script>
+{% endblock %}

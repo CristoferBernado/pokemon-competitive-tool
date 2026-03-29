@@ -1,5 +1,6 @@
 from flask import Blueprint, render_template, request, jsonify, current_app, url_for
 from .services.pokeapi_service import PokeAPIService
+from .models.type_defenses import ALL_TYPES, DEFENSE_CHART
 
 main_bp = Blueprint('main', __name__)
 pokeapi = PokeAPIService()
@@ -131,6 +132,15 @@ def pokemon_detail(pokemon_id):
         'pokemon_detail.html',
         pokemon=pokemon,
         stats=stats,
+    )
+
+
+@main_bp.route('/teambuilder')
+def teambuilder():
+    return render_template(
+        'teambuilder.html',
+        all_types=ALL_TYPES,
+        defense_chart=DEFENSE_CHART,
     )
 
 
