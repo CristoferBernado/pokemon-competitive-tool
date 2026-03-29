@@ -32,6 +32,18 @@ body.pokedex-body {
     overflow-x: hidden;
 }
 
+/* Global Card Theming */
+.card {
+    background-color: var(--card-bg) !important;
+    border-color: var(--border-color) !important;
+    color: var(--text-color);
+}
+
+.card-header {
+    background-color: rgba(0, 0, 0, 0.05) !important;
+    border-bottom: 1px solid var(--border-color) !important;
+}
+
 /* Kalos Bezels */
 .pokedex-bezel {
     background-color: var(--kalos-red);
@@ -327,9 +339,9 @@ body.pokedex-body {
 .theme-toggle-btn { color: #fff; background: none; border: none; font-size: 1.2rem; cursor: pointer; }
 
 /* Details Page Fixes */
-.progress { height: 10px; background: rgba(255,255,255,0.1); border-radius: 5px; }
+.progress { height: 10px; background: var(--border-color); border-radius: 5px; }
 .progress-bar { background-color: var(--kalos-cyan); box-shadow: 0 0 10px var(--kalos-glow); }
-.list-group-item { background: transparent !important; color: #fff !important; border-color: rgba(255,255,255,0.1) !important; }
+.list-group-item { background: transparent !important; color: var(--text-color) !important; border-color: var(--border-color) !important; }
 
 .text-muted {
     color: var(--muted-text) !important;
