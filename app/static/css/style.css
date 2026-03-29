@@ -347,3 +347,58 @@ body.pokedex-body {
     color: var(--muted-text) !important;
 }
 
+/* Type Defenses */
+.type-defense-grid {
+    display: flex;
+    flex-direction: column;
+}
+
+.defense-row {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+}
+
+.defense-cell {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    margin: 1px;
+    min-width: 0;
+}
+
+.defense-cell .type-badge-pill {
+    padding: 6px 0;
+    margin: 0;
+    border-radius: 3px 3px 0 0;
+    font-size: 0.70rem;
+    text-align: center;
+    box-shadow: none;
+    height: 28px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.defense-cell .defense-val {
+    padding: 6px 0;
+    border-radius: 0 0 3px 3px;
+    font-size: 0.85rem;
+    font-weight: bold;
+    text-align: center;
+    height: 30px;
+    background-color: transparent;
+    border: 1px solid var(--border-color);
+    border-top: none;
+    color: var(--text-color);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.val-0-0 { background-color: #2e3436 !important; color: #fff !important; border-color: #2e3436 !important; }
+.val-0-25 { background-color: #790000 !important; color: #ffebeb !important; border-color: #790000 !important;}
+.val-0-5 { background-color: #a40000 !important; color: #ffd7d7 !important; border-color: #a40000 !important; }
+.val-2-0 { background-color: #4e9a06 !important; color: #fff !important; border-color: #4e9a06 !important; }
+.val-4-0 { background-color: #73d216 !important; color: #000 !important; border-color: #73d216 !important; }
+

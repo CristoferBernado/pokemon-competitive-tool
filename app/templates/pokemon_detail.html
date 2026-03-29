@@ -101,6 +101,40 @@
                 </ul>
             </div>
         </div>
+
+        <div class="card mt-4">
+            <div class="card-header">
+                <h4>Type defenses</h4>
+            </div>
+            <div class="card-body">
+                <p class="mb-3 text-muted">The effectiveness of each type on <i>{{ pokemon.name }}</i>.</p>
+                
+                <div class="type-defense-grid mb-3">
+                    {% set all_types = ['normal', 'fire', 'water', 'electric', 'grass', 'ice', 'fighting', 'poison', 'ground', 'flying', 'psychic', 'bug', 'rock', 'ghost', 'dragon', 'dark', 'steel', 'fairy'] %}
+                    
+                    <div class="d-flex flex-wrap defense-row">
+                        {% for t in all_types[:9] %}
+                        <div class="defense-cell">
+                            <div class="type-badge-pill type-{{ t }}">{{ t[:3]|upper }}</div>
+                            <div class="defense-val val-{{ pokemon.type_defenses[t]|string|replace('.', '-') }}">
+                                {% if pokemon.type_defenses[t] == 0.5 %}&frac12;{% elif pokemon.type_defenses[t] == 0.25 %}&frac14;{% elif pokemon.type_defenses[t] == 0.0 %}0{% elif pokemon.type_defenses[t] == 1.0 %}{% elif pokemon.type_defenses[t] == 2.0 %}2{% elif pokemon.type_defenses[t] == 4.0 %}4{% else %}{{ pokemon.type_defenses[t] }}{% endif %}
+                            </div>
+                        </div>
+                        {% endfor %}
+                    </div>
+                    <div class="d-flex flex-wrap defense-row mt-2">
+                        {% for t in all_types[9:] %}
+                        <div class="defense-cell">
+                            <div class="type-badge-pill type-{{ t }}">{{ t[:3]|upper }}</div>
+                            <div class="defense-val val-{{ pokemon.type_defenses[t]|string|replace('.', '-') }}">
+                                 {% if pokemon.type_defenses[t] == 0.5 %}&frac12;{% elif pokemon.type_defenses[t] == 0.25 %}&frac14;{% elif pokemon.type_defenses[t] == 0.0 %}0{% elif pokemon.type_defenses[t] == 1.0 %}{% elif pokemon.type_defenses[t] == 2.0 %}2{% elif pokemon.type_defenses[t] == 4.0 %}4{% else %}{{ pokemon.type_defenses[t] }}{% endif %}
+                            </div>
+                        </div>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 </div>
 {% endblock %}

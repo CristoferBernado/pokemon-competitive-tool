@@ -35,6 +35,16 @@ class Pokemon:
     def formatted_id(self) -> str:
         return f"Nº {self.id:04d}"
 
+    @property
+    def type_defenses(self) -> Dict[str, float]:
+        from .type_defenses import ALL_TYPES, DEFENSE_CHART
+        defenses = {t: 1.0 for t in ALL_TYPES}
+        for t in self.types:
+            chart = DEFENSE_CHART.get(t, {})
+            for attacker in ALL_TYPES:
+                defenses[attacker] *= chart.get(attacker, 1.0)
+        return defenses
+
     @classmethod
     def from_api_data(cls, data: Dict[str, Any]) -> 'Pokemon':
         sprites = data.get('sprites') or {}
