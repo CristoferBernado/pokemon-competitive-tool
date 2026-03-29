@@ -396,11 +396,12 @@ body.pokedex-body {
     align-items: center;
 }
 
-.val-0-0 { background-color: #2e3436 !important; color: #fff !important; border-color: #2e3436 !important; }
-.val-0-25 { background-color: #790000 !important; color: #ffebeb !important; border-color: #790000 !important;}
-.val-0-5 { background-color: #a40000 !important; color: #ffd7d7 !important; border-color: #a40000 !important; }
-.val-2-0 { background-color: #4e9a06 !important; color: #fff !important; border-color: #4e9a06 !important; }
-.val-4-0 { background-color: #73d216 !important; color: #000 !important; border-color: #73d216 !important; }
+.val-0-0 { background-color: transparent !important; border-color: var(--border-color) !important; }
+.val-0-0 span { background-color: rgba(128,128,128,0.5) !important; color: #fff; padding: 2px 6px; border-radius: 10px; font-size: 0.75rem; }
+.val-0-25 { background-color: transparent !important; color: #00ce00 !important; border-color: var(--border-color) !important;}
+.val-0-5 { background-color: transparent !important; color: #4aff4a !important; border-color: var(--border-color) !important; }
+.val-2-0 { background-color: transparent !important; color: #ff3b3b !important; border-color: var(--border-color) !important; }
+.val-4-0 { background-color: #e60000 !important; color: #fff !important; border-color: #e60000 !important; }
 
 /* Teambuilder Panel Styles */
 .teambuilder-panel {

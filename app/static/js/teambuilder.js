@@ -93,7 +93,8 @@
                     const p = data.results[0];
                     team[slotIndex] = {
                         name: p.name,
-                        types: p.types
+                        types: p.types,
+                        sprite_url: p.sprite_url
                     };
                     updateCoverage();
                 }
@@ -101,17 +102,44 @@
     }
 
     function updateCoverage() {
+        updateHeaders();
         renderDefensiveTable();
         renderOffensiveTable();
+    }
+
+    function updateHeaders() {
+        const defHeaders = document.querySelectorAll('#defensive-table thead th.slot-header');
+        const offHeaders = document.querySelectorAll('#offensive-table thead th.slot-header');
+        
+        for (let i = 0; i < 6; i++) {
+            const p = team[i];
+            let content = `${i + 1}`;
+            
+            if (p && p.sprite_url) {
+                content = `<div class="d-flex flex-column align-items-center justify-content-end" style="height: 60px;">
+                    <img src="${p.sprite_url}" alt="${p.name}" style="max-height: 40px; width: auto; object-fit: contain;">
+                    <span style="font-size: 0.75rem; font-weight: normal; margin-top: 2px; line-height: 1;">${p.name}</span>
+                </div>`;
+            } else if (p && !p.sprite_url) {
+                content = `<div class="d-flex flex-column align-items-center justify-content-end" style="height: 60px;">
+                    <span style="font-size: 0.75rem; font-weight: normal; margin-top: auto; line-height: 1;">${p.name}</span>
+                </div>`;
+            } else {
+                content = `<div class="d-flex align-items-center justify-content-center" style="height: 60px;">${i + 1}</div>`;
+            }
+            
+            if (defHeaders[i]) defHeaders[i].innerHTML = content;
+            if (offHeaders[i]) offHeaders[i].innerHTML = content;
+        }
     }
 
     function getMultiplierDisplay(val) {
         if (val === 0.5) return '&frac12;';
         if (val === 0.25) return '&frac14;';
-        if (val === 0) return '0';
+        if (val === 0) return '<span>imune</span>';
         if (val === 1) return '';
-        if (val === 2) return '2';
-        if (val === 4) return '4';
+        if (val === 2) return '2x';
+        if (val === 4) return '4x';
         return val;
     }
 
