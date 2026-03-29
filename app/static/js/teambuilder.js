@@ -143,6 +143,20 @@
         return val;
     }
 
+    function getWeakScaleClass(count) {
+        if (count >= 3) return 'scale-weak-3';
+        if (count === 2) return 'scale-weak-2';
+        if (count === 1) return 'scale-weak-1';
+        return '';
+    }
+
+    function getResistScaleClass(count) {
+        if (count >= 3) return 'scale-resist-3';
+        if (count === 2) return 'scale-resist-2';
+        if (count === 1) return 'scale-resist-1';
+        return '';
+    }
+
     function getMultiplierClass(val) {
         if (val === 0) return 'val-0-0';
         if (val === 0.25) return 'val-0-25';
@@ -188,12 +202,12 @@
 
             // Totals
             const tdWeak = document.createElement('td');
-            tdWeak.className = 'total-weak';
+            tdWeak.className = 'total-weak ' + getWeakScaleClass(totalWeak);
             tdWeak.textContent = totalWeak > 0 ? totalWeak : '';
             tr.appendChild(tdWeak);
 
             const tdResist = document.createElement('td');
-            tdResist.className = 'total-resist';
+            tdResist.className = 'total-resist ' + getResistScaleClass(totalResist);
             tdResist.textContent = totalResist > 0 ? totalResist : '';
             tr.appendChild(tdResist);
 
@@ -243,7 +257,7 @@
 
             // Totals
             const tdStrong = document.createElement('td');
-            tdStrong.className = 'total-strong';
+            tdStrong.className = 'total-strong ' + getResistScaleClass(totalStrong);
             tdStrong.textContent = totalStrong > 0 ? totalStrong : '';
             tr.appendChild(tdStrong);
 
