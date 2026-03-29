@@ -32,25 +32,31 @@
 {% elif pokemons %}
 <div class="row mt-4 search-results">
     {% for pokemon in pokemons %}
-    <div class="col-6 col-md-4 col-lg-3 mb-4">
+    <div class="col-12 col-sm-6 col-lg-4 col-xl-3 mb-4">
         <a href="{{ url_for('main.pokemon_detail', pokemon_id=pokemon.id) }}" class="pokemon-card">
             <div class="card h-100">
-                {% if pokemon.official_artwork_url %}
-                <img src="{{ pokemon.official_artwork_url }}" class="card-img-top" alt="{{ pokemon.name }}">
-                {% elif pokemon.sprite_url %}
-                <img src="{{ pokemon.sprite_url }}" class="card-img-top" alt="{{ pokemon.name }}">
-                {% else %}
-                <div class="card-img-top d-flex align-items-center justify-content-center bg-light text-muted">?</div>
-                {% endif %}
-                <div class="card-body">
-                    <div class="pokemon-id">{{ pokemon.formatted_id }}</div>
-                    <h5 class="pokemon-name">{{ pokemon.name }}</h5>
-                    <div class="pokemon-types-container">
-                        {% for type in pokemon.types %}
-                        <span class="type-badge type-{{ type }}">{{ type|capitalize }}</span>
-                        {% endfor %}
-                    </div>
+                <div class="card-decoration-diamond"></div>
+                
+                <div class="pokemon-portrait-wrapper">
+                    {% if pokemon.official_artwork_url %}
+                    <img src="{{ pokemon.official_artwork_url }}" alt="{{ pokemon.name }}">
+                    {% elif pokemon.sprite_url %}
+                    <img src="{{ pokemon.sprite_url }}" alt="{{ pokemon.name }}">
+                    {% else %}
+                    <div class="d-flex align-items-center justify-content-center text-muted">?</div>
+                    {% endif %}
                 </div>
+
+                    <div class="card-body">
+                        <div class="pokemon-id">{{ pokemon.formatted_id }}</div>
+                        <h2 class="pokemon-name text-truncate">{{ pokemon.name }}</h2>
+                        
+                        <div class="pokemon-types-container">
+                            {% for type in pokemon.types %}
+                                <span class="type-badge-pill type-{{ type }}">{{ type|capitalize }}</span>
+                            {% endfor %}
+                        </div>
+                    </div>
             </div>
         </a>
     </div>

@@ -84,26 +84,27 @@
 
         slice.forEach(function (p) {
             const col = document.createElement('div');
-            col.className = 'col-6 col-md-4 col-lg-3 mb-4';
+            col.className = 'col-12 col-sm-6 col-lg-4 col-xl-3 mb-4';
 
             const imgUrl = p.official_artwork_url || p.sprite_url;
             const imgHtml = imgUrl
-                ? '<img src="' + esc(imgUrl) + '" class="card-img-top" alt="' + esc(p.name) + '">'
-                : '<div class="card-img-top d-flex align-items-center justify-content-center bg-light text-muted">?</div>';
+                ? '<img src="' + esc(imgUrl) + '" alt="' + esc(p.name) + '">'
+                : '<div class="d-flex align-items-center justify-content-center text-muted">?</div>';
 
             const typesHtml = (p.types || [])
                 .map(function (t) {
-                    return '<span class="type-badge type-' + esc(t) + '">' + esc(capitalize(t)) + '</span>';
+                    return '<span class="type-badge-pill type-' + esc(t.toLowerCase()) + '">' + esc(capitalize(t)) + '</span>';
                 })
-                .join(' ');
+                .join('');
 
             col.innerHTML =
-                '<a href="' + esc(p.detail_url) + '" class="pokemon-card">' +
+                '<a href="' + esc(p.detail_url) + '" id="pokemon-' + p.id + '" class="pokemon-card">' +
                 '<div class="card h-100">' +
-                imgHtml +
+                '<div class="card-decoration-diamond"></div>' +
+                '<div class="pokemon-portrait-wrapper">' + imgHtml + '</div>' +
                 '<div class="card-body">' +
                 '<div class="pokemon-id">' + formatId(p.id) + '</div>' +
-                '<h5 class="pokemon-name">' + esc(p.name) + '</h5>' +
+                '<h2 class="pokemon-name text-truncate">' + esc(p.name) + '</h2>' +
                 '<div class="pokemon-types-container">' + typesHtml + '</div>' +
                 '</div></div></a>';
 

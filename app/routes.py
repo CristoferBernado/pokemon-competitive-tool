@@ -58,6 +58,8 @@ def search():
                 'sprite_url': p.sprite_url,
                 'official_artwork_url': p.official_artwork_url,
                 'generation': p.generation,
+                'hp': p.hp,
+                'attack': p.attack,
                 'detail_url': url_for('main.pokemon_detail', pokemon_id=p.id),
             }
             for p in all_pokemons

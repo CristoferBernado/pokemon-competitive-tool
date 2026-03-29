@@ -5,24 +5,23 @@
 {% block content %}
 <div class="row">
     <div class="col-md-8 offset-md-2 text-center">
-        <h1 class="display-4 mb-4">Bem-vindo ao Pokémon Competitive</h1>
+        <h1 class="display-4 mb-4">Poketool Competitive Ecosystem</h1>
         <p class="lead">Sua ferramenta completa para análise competitiva de Pokémon</p>
         
-        <div class="card mt-5">
+        <div class="card mt-5 pokedex-search-card">
             <div class="card-body">
                 <h5 class="card-title">Busque por Pokémon</h5>
                 <form action="{{ url_for('main.search') }}" method="get" class="mt-3 home-search-form site-search-form">
                     <div class="row g-3 align-items-stretch justify-content-center">
                         <div class="col-12 col-lg-8">
                             <input type="text" class="form-control form-control-lg" 
-                                   name="q" placeholder="Nome, número da Pokédex ou tipo (ex: pikachu, 25, water)…"
+                                   name="q" placeholder="Nome, número ou tipo…"
                                    autocomplete="off">
                         </div>
                         <div class="col-12 col-lg-4 d-grid">
                             <button type="submit" class="btn btn-danger btn-lg home-search-btn">Buscar</button>
                         </div>
                     </div>
-                    <p class="text-muted small mt-2 mb-0">A busca detecta sozinha se é nome, número ou tipo.</p>
                 </form>
             </div>
         </div>

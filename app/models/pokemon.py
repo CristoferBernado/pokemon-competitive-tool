@@ -26,6 +26,8 @@ class Pokemon:
     weight: int
     abilities: List[Dict[str, Any]]
     base_experience: int
+    hp: int = 0
+    attack: int = 0
     species_url: Optional[str] = None
     generation: Optional[int] = None
     
@@ -40,6 +42,13 @@ class Pokemon:
         official = (other.get('official-artwork') or {}).get('front_default')
         front = sprites.get('front_default')
         species = data.get('species') or {}
+        
+        # Stats extraction
+        stats_dict = {
+            s['stat']['name']: s['base_stat']
+            for s in data.get('stats') or []
+        }
+        
         ability_rows = []
         for a in data.get('abilities') or []:
             ab = a.get('ability') or {}
@@ -58,6 +67,8 @@ class Pokemon:
             weight=(data.get('weight') or 0) / 10,
             abilities=ability_rows,
             base_experience=data.get('base_experience') or 0,
+            hp=stats_dict.get('hp', 0),
+            attack=stats_dict.get('attack', 0),
             species_url=species.get('url'),
             generation=None,
         )
