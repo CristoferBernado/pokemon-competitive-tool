@@ -78,6 +78,10 @@
     }
 
     function renderCards() {
+        root.classList.remove('fade-in-section');
+        void root.offsetWidth; // force DOM reflow to restart animation
+        root.classList.add('fade-in-section');
+
         root.innerHTML = '';
         const start = (currentPage - 1) * perPage;
         const slice = items.slice(start, start + perPage);
