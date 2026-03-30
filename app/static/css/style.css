@@ -386,8 +386,66 @@ body.pokedex-body::before {
     color: #000000 !important;
 }
 
-/* Theme Toggle */
-.theme-toggle-btn { color: #fff; background: none; border: none; font-size: 1.2rem; cursor: pointer; }
+/* Custom Light/Dark Solrock/Lunatone Toggle */
+.light-dark-toggle {
+    background: #5d6396;
+    border: 2px solid rgba(0, 0, 0, 0.2);
+    border-radius: 20px;
+    width: 60px;
+    height: 26px;
+    position: relative;
+    cursor: pointer;
+    box-shadow: inset 0 2px 6px rgba(0,0,0,0.4);
+    padding: 0;
+    display: flex;
+    align-items: center;
+}
+
+.light-dark-toggle:focus {
+    outline: none;
+    border-color: var(--kalos-cyan);
+}
+
+.light-dark-toggle .indicator {
+    position: absolute;
+    top: -6px; /* Offset to allow sprite to overflow the track slightly */
+    width: 32px;
+    height: 32px;
+    transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275), opacity 0.3s;
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+}
+
+.indicator.sprite-solrock {
+    background-image: url('https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/338.png');
+    left: -4px;
+}
+
+.indicator.sprite-lunatone {
+    background-image: url('https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/337.png');
+    left: 22px;
+}
+
+[data-theme="light"] .indicator.sprite-solrock {
+    opacity: 1;
+    transform: scale(1.3) rotate(0deg);
+}
+
+[data-theme="light"] .indicator.sprite-lunatone {
+    opacity: 0;
+    transform: scale(0.5) rotate(-45deg);
+}
+
+[data-theme="dark"] .indicator.sprite-solrock {
+    opacity: 0;
+    transform: scale(0.5) rotate(45deg);
+}
+
+[data-theme="dark"] .indicator.sprite-lunatone {
+    opacity: 1;
+    transform: scale(1.3) rotate(0deg);
+}
 
 /* Details Page Fixes */
 .progress { height: 10px; background: var(--border-color); border-radius: 5px; }
