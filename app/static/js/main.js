@@ -84,3 +84,21 @@ document.querySelectorAll('.pokemon-card').forEach(card => {
         this.style.transform = 'scale(1)';
     });
 });
+
+window.fitPokemonNames = function() {
+    document.querySelectorAll('.pokemon-name').forEach(el => {
+        el.style.fontSize = ''; // Redefine para testar o tamanho original de 1.6rem
+        const containerWidth = el.parentElement.clientWidth;
+        const textWidth = el.scrollWidth;
+
+        if (textWidth > containerWidth && containerWidth > 0) {
+            const ratio = containerWidth / textWidth;
+            let newSize = 1.6 * ratio * 0.95;
+            if (newSize < 0.8) newSize = 0.8; // limite minimo legivel
+            el.style.fontSize = newSize + 'rem';
+        }
+    });
+};
+
+document.addEventListener('DOMContentLoaded', window.fitPokemonNames);
+window.addEventListener('resize', window.fitPokemonNames);

@@ -14,15 +14,15 @@
             </div>
             {% endif %}
             <div class="card-body text-center">
-                <h2>{{ pokemon.name }}</h2>
+                <h2 class="pokemon-name">{{ pokemon.name }}</h2>
                 <h6 class="pokemon-id">{{ pokemon.formatted_id }}</h6>
                 {% if pokemon.generation %}
                 <p class="mb-2"><span class="badge bg-secondary">Geração {{ pokemon.generation }}ª</span></p>
                 {% endif %}
                 <p class="text-muted small mb-2 mt-3">Tipos</p>
-                <div class="pokemon-types mb-3">
+                <div class="pokemon-types-container mb-3">
                     {% for type in pokemon.types %}
-                    <span class="type-badge type-{{ type }}">{{ type|capitalize }}</span>
+                    <span class="type-badge-pill type-{{ type }}">{{ type|capitalize }}</span>
                     {% endfor %}
                 </div>
                 <p><strong>Altura:</strong> {{ pokemon.height }}m</p>

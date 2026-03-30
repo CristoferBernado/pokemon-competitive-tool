@@ -69,7 +69,7 @@ class Pokemon:
             })
         return cls(
             id=data['id'],
-            name=data['name'].capitalize(),
+            name=data['name'].replace('-', ' ').title(),
             types=[t['type']['name'] for t in data.get('types') or []],
             sprite_url=front,
             official_artwork_url=official or front,

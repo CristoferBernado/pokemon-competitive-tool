@@ -108,7 +108,7 @@
                 '<div class="pokemon-portrait-wrapper">' + imgHtml + '</div>' +
                 '<div class="card-body">' +
                 '<div class="pokemon-id">' + formatId(p.id) + '</div>' +
-                '<h2 class="pokemon-name text-truncate">' + esc(p.name) + '</h2>' +
+                '<h2 class="pokemon-name">' + esc(p.name) + '</h2>' +
                 '<div class="pokemon-types-container">' + typesHtml + '</div>' +
                 '</div></div></a>';
 
@@ -116,6 +116,9 @@
         });
 
         attachCardEffects(root);
+        if (typeof window.fitPokemonNames === 'function') {
+            window.fitPokemonNames();
+        }
     }
 
     function renderPagination() {
