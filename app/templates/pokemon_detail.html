@@ -9,7 +9,8 @@
             {% if pokemon.official_artwork_url %}
             <img src="{{ pokemon.official_artwork_url }}" class="card-img-top" alt="{{ pokemon.name }}">
             {% else %}
-            <div class="card-img-top d-flex align-items-center justify-content-center text-muted detail-art-placeholder">
+            <div
+                class="card-img-top d-flex align-items-center justify-content-center text-muted detail-art-placeholder">
                 Sem arte oficial
             </div>
             {% endif %}
@@ -55,25 +56,29 @@
                     <div class="stat-item mb-3">
                         <label>Defesa: {{ stats.defense }}</label>
                         <div class="progress">
-                            <div class="progress-bar bg-primary" style="width: {{ (stats.defense / 255) * 100 }}%"></div>
+                            <div class="progress-bar bg-primary" style="width: {{ (stats.defense / 255) * 100 }}%">
+                            </div>
                         </div>
                     </div>
                     <div class="stat-item mb-3">
                         <label>Ataque Especial: {{ stats.special_attack }}</label>
                         <div class="progress">
-                            <div class="progress-bar bg-warning" style="width: {{ (stats.special_attack / 255) * 100 }}%"></div>
+                            <div class="progress-bar bg-warning"
+                                style="width: {{ (stats.special_attack / 255) * 100 }}%"></div>
                         </div>
                     </div>
                     <div class="stat-item mb-3">
                         <label>Defesa Especial: {{ stats.special_defense }}</label>
                         <div class="progress">
-                            <div class="progress-bar bg-info" style="width: {{ (stats.special_defense / 255) * 100 }}%"></div>
+                            <div class="progress-bar bg-info" style="width: {{ (stats.special_defense / 255) * 100 }}%">
+                            </div>
                         </div>
                     </div>
                     <div class="stat-item mb-3">
                         <label>Velocidade: {{ stats.speed }}</label>
                         <div class="progress">
-                            <div class="progress-bar bg-secondary" style="width: {{ (stats.speed / 255) * 100 }}%"></div>
+                            <div class="progress-bar bg-secondary" style="width: {{ (stats.speed / 255) * 100 }}%">
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -108,16 +113,20 @@
             </div>
             <div class="card-body">
                 <p class="mb-3 text-muted">The effectiveness of each type on <i>{{ pokemon.name }}</i>.</p>
-                
+
                 <div class="type-defense-grid mb-3">
-                    {% set all_types = ['normal', 'fire', 'water', 'electric', 'grass', 'ice', 'fighting', 'poison', 'ground', 'flying', 'psychic', 'bug', 'rock', 'ghost', 'dragon', 'dark', 'steel', 'fairy'] %}
-                    
+                    {% set all_types = ['normal', 'fire', 'water', 'electric', 'grass', 'ice', 'fighting', 'poison',
+                    'ground', 'flying', 'psychic', 'bug', 'rock', 'ghost', 'dragon', 'dark', 'steel', 'fairy'] %}
+
                     <div class="d-flex flex-wrap defense-row">
                         {% for t in all_types[:9] %}
                         <div class="defense-cell">
                             <div class="type-badge-pill type-{{ t }}">{{ t[:3]|upper }}</div>
                             <div class="defense-val val-{{ pokemon.type_defenses[t]|string|replace('.', '-') }}">
-                                {% if pokemon.type_defenses[t] == 0.5 %}&frac12;{% elif pokemon.type_defenses[t] == 0.25 %}&frac14;{% elif pokemon.type_defenses[t] == 0.0 %}0{% elif pokemon.type_defenses[t] == 1.0 %}{% elif pokemon.type_defenses[t] == 2.0 %}2{% elif pokemon.type_defenses[t] == 4.0 %}4{% else %}{{ pokemon.type_defenses[t] }}{% endif %}
+                                {% if pokemon.type_defenses[t] == 0.5 %}&frac12;{% elif pokemon.type_defenses[t] == 0.25
+                                %}&frac14;{% elif pokemon.type_defenses[t] == 0.0 %}0{% elif pokemon.type_defenses[t] ==
+                                1.0 %}{% elif pokemon.type_defenses[t] == 2.0 %}2{% elif pokemon.type_defenses[t] == 4.0
+                                %}4{% else %}{{ pokemon.type_defenses[t] }}{% endif %}
                             </div>
                         </div>
                         {% endfor %}
@@ -127,7 +136,10 @@
                         <div class="defense-cell">
                             <div class="type-badge-pill type-{{ t }}">{{ t[:3]|upper }}</div>
                             <div class="defense-val val-{{ pokemon.type_defenses[t]|string|replace('.', '-') }}">
-                                 {% if pokemon.type_defenses[t] == 0.5 %}&frac12;{% elif pokemon.type_defenses[t] == 0.25 %}&frac14;{% elif pokemon.type_defenses[t] == 0.0 %}0{% elif pokemon.type_defenses[t] == 1.0 %}{% elif pokemon.type_defenses[t] == 2.0 %}2{% elif pokemon.type_defenses[t] == 4.0 %}4{% else %}{{ pokemon.type_defenses[t] }}{% endif %}
+                                {% if pokemon.type_defenses[t] == 0.5 %}&frac12;{% elif pokemon.type_defenses[t] == 0.25
+                                %}&frac14;{% elif pokemon.type_defenses[t] == 0.0 %}0{% elif pokemon.type_defenses[t] ==
+                                1.0 %}{% elif pokemon.type_defenses[t] == 2.0 %}2{% elif pokemon.type_defenses[t] == 4.0
+                                %}4{% else %}{{ pokemon.type_defenses[t] }}{% endif %}
                             </div>
                         </div>
                         {% endfor %}
