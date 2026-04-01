@@ -8,7 +8,7 @@
     <div class="col-xl-4 col-lg-5 mb-4">
         <div class="teambuilder-panel">
             <div class="teambuilder-header" style="background-color: #2d4576 !important; color: white !important;">
-                Team Input
+                {{ t('Team Input') }}
             </div>
             <div id="team-inputs-container">
                 <!-- 6 input rows rendered by JS -->
@@ -23,21 +23,21 @@
             <div class="col-12 mb-4">
                 <div class="teambuilder-panel cov-panel">
                     <div class="teambuilder-header text-center" style="background-color: #2d4576 !important; color: white !important;">
-                        Defensive Coverage
+                        {{ t('Defensive Coverage') }}
                     </div>
                     <div class="table-responsive">
                         <table class="cov-table" id="defensive-table">
                             <thead>
                                 <tr>
-                                    <th class="cov-type-col">Movi.<br>↓</th>
+                                    <th class="cov-type-col">{{ t('Movi.')|safe }}</th>
                                     <th class="slot-header" data-slot="0">1</th>
                                     <th class="slot-header" data-slot="1">2</th>
                                     <th class="slot-header" data-slot="2">3</th>
                                     <th class="slot-header" data-slot="3">4</th>
                                     <th class="slot-header" data-slot="4">5</th>
                                     <th class="slot-header" data-slot="5">6</th>
-                                    <th>Fraq.<br>Total</th>
-                                    <th>Resist.<br>Total</th>
+                                    <th>{{ t('Fraq. Total')|safe }}</th>
+                                    <th>{{ t('Resist. Total')|safe }}</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -52,20 +52,20 @@
             <div class="col-12 mb-4">
                 <div class="teambuilder-panel cov-panel">
                     <div class="teambuilder-header text-center" style="background-color: #2d4576 !important; color: white !important;">
-                        Cobertura Ofensiva (Forte Contra)
+                        {{ t('Cobertura Ofensiva (Forte Contra)') }}
                     </div>
                     <div class="table-responsive">
                         <table class="cov-table" id="offensive-table">
                             <thead>
                                 <tr>
-                                    <th class="cov-type-col">Defensor<br>↓</th>
+                                    <th class="cov-type-col">{{ t('Defensor')|safe }}</th>
                                     <th class="slot-header" data-slot="0">1</th>
                                     <th class="slot-header" data-slot="1">2</th>
                                     <th class="slot-header" data-slot="2">3</th>
                                     <th class="slot-header" data-slot="3">4</th>
                                     <th class="slot-header" data-slot="4">5</th>
                                     <th class="slot-header" data-slot="5">6</th>
-                                    <th>Forte<br>Total</th>
+                                    <th>{{ t('Forte Total')|safe }}</th>
                                 </tr>
                             </thead>
                             <tbody>

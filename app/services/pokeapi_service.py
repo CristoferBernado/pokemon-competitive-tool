@@ -8,18 +8,26 @@ from ..models.pokemon import Pokemon, PokemonStats, generation_name_to_number
 _LANG_PRIORITY = ('pt-BR', 'pt', 'es', 'en')
 
 
-def _pick_ability_effect_text(effect_entries: List[Dict[str, Any]]) -> str:
+def _pick_ability_effect_text(effect_entries: List[Dict[str, Any]], target_lang: str = 'pt') -> str:
+    fallback = 'Descrição não disponível.' if target_lang == 'pt' else 'Description not available.'
     if not effect_entries:
-        return 'Descrição não disponível.'
-    for lang in _LANG_PRIORITY:
+        return fallback
+    
+    if target_lang == 'en':
+        priority = ('en',)
+    else:
+        priority = ('pt-BR', 'pt', 'es', 'en')
+
+    for lang in priority:
         for entry in effect_entries:
             if (entry.get('language') or {}).get('name') == lang:
                 text = (entry.get('short_effect') or entry.get('effect') or '').strip()
                 if text:
                     return text.replace('\n', ' ')
+                    
     entry = effect_entries[0]
     text = (entry.get('short_effect') or entry.get('effect') or '').strip()
-    return text.replace('\n', ' ') if text else 'Descrição não disponível.'
+    return text.replace('\n', ' ') if text else fallback
 
 
 class PokeAPIService:
@@ -83,15 +91,16 @@ class PokeAPIService:
         timeout = float(current_app.config.get('POKEAPI_TIMEOUT', 10))
         return self._species_generation_from_url(species_url, timeout)
 
-    def _fetch_ability_text(self, slug: str, timeout: float) -> str:
-        if slug in self._ability_text_cache:
-            return self._ability_text_cache[slug]
+    def _fetch_ability_text(self, slug: str, timeout: float, lang: str = 'pt') -> str:
+        cache_key = f"{slug}_{lang}"
+        if cache_key in self._ability_text_cache:
+            return self._ability_text_cache[cache_key]
         data = self._get_json_threadsafe(f'ability/{slug}', timeout, silent_404=True)
         if not data:
-            text = 'Descrição não disponível.'
+            text = 'Descrição não disponível.' if lang == 'pt' else 'Description not available.'
         else:
-            text = _pick_ability_effect_text(data.get('effect_entries') or [])
-        self._ability_text_cache[slug] = text
+            text = _pick_ability_effect_text(data.get('effect_entries') or [], lang)
+        self._ability_text_cache[cache_key] = text
         return text
 
     def enrich_pokemon_generation(self, pokemon: Pokemon) -> None:
@@ -99,12 +108,12 @@ class PokeAPIService:
             return
         pokemon.generation = self._species_generation(pokemon.species_url)
 
-    def enrich_pokemon_abilities_text(self, pokemon: Pokemon) -> None:
+    def enrich_pokemon_abilities_text(self, pokemon: Pokemon, lang: str = 'pt') -> None:
         timeout = float(current_app.config.get('POKEAPI_TIMEOUT', 10))
         for row in pokemon.abilities:
             slug = row.get('name', '')
             if slug:
-                row['description'] = self._fetch_ability_text(slug, timeout)
+                row['description'] = self._fetch_ability_text(slug, timeout, lang)
 
     def enrich_pokemon_list_generations(self, pokemons: List[Pokemon]) -> None:
         if not pokemons:
@@ -120,9 +129,9 @@ class PokeAPIService:
         for p, gen in pairs:
             p.generation = gen
 
-    def enrich_pokemon_for_detail(self, pokemon: Pokemon) -> None:
+    def enrich_pokemon_for_detail(self, pokemon: Pokemon, lang: str = 'pt') -> None:
         self.enrich_pokemon_generation(pokemon)
-        self.enrich_pokemon_abilities_text(pokemon)
+        self.enrich_pokemon_abilities_text(pokemon, lang)
 
     def get_pokemon_by_id(self, pokemon_id: int) -> Optional[Pokemon]:
         """Busca Pokémon pelo ID"""

@@ -1,9 +1,30 @@
-from flask import Blueprint, render_template, request, jsonify, current_app, url_for
+from flask import Blueprint, render_template, request, jsonify, current_app, url_for, g, make_response, redirect
 from .services.pokeapi_service import PokeAPIService
 from .models.type_defenses import ALL_TYPES, DEFENSE_CHART
+from .translations import UI_TRANSLATIONS
 
 main_bp = Blueprint('main', __name__)
 pokeapi = PokeAPIService()
+
+@main_bp.before_request
+def load_language():
+    g.lang = request.cookies.get('lang', 'pt')
+
+@main_bp.context_processor
+def inject_translator():
+    def t(key):
+        lang = getattr(g, 'lang', 'pt')
+        return UI_TRANSLATIONS.get(lang, UI_TRANSLATIONS['pt']).get(key, key)
+    return dict(t=t)
+
+@main_bp.route('/set_language/<lang>')
+def set_language(lang):
+    if lang not in ['pt', 'en']:
+        lang = 'pt'
+    resp = make_response(redirect(request.referrer or url_for('main.index')))
+    resp.set_cookie('lang', lang, max_age=30*24*60*60)
+    return resp
+
 
 
 def _pagination_window(page: int, total_pages: int, width: int = 7) -> list[int]:
@@ -126,7 +147,7 @@ def pokemon_detail(pokemon_id):
     if not pokemon:
         return render_template('404.html'), 404
 
-    pokeapi.enrich_pokemon_for_detail(pokemon)
+    pokeapi.enrich_pokemon_for_detail(pokemon, getattr(g, 'lang', 'pt'))
 
     return render_template(
         'pokemon_detail.html',
