@@ -69,7 +69,11 @@ UI_TRANSLATIONS = {
         'Fraq. Total': 'Fraq.<br>Total',
         'Resist. Total': 'Resist.<br>Total',
         'Defensor': 'Defensor<br>↓',
-        'Forte Total': 'Forte<br>Total'
+        'Forte Total': 'Forte<br>Total',
+        'Bem-vindo ao Bidoof Lab\'s': 'Bem-vindo ao Bidoof Lab\'s',
+        'Entrar': 'Entrar',
+        'Apresentação': 'Apresentação',
+        'Pokédex': 'Pokédex'
     },
     'en': {
         'Buscando Pokémon…': 'Searching Pokémon…',
@@ -141,6 +145,10 @@ UI_TRANSLATIONS = {
         'Fraq. Total': 'Weak<br>Total',
         'Resist. Total': 'Resist.<br>Total',
         'Defensor': 'Defender<br>↓',
-        'Forte Total': 'Strong<br>Total'
+        'Forte Total': 'Strong<br>Total',
+        'Bem-vindo ao Bidoof Lab\'s': 'Welcome to Bidoof Lab\'s',
+        'Entrar': 'Enter',
+        'Apresentação': 'Landing Page',
+        'Pokédex': 'Pokédex'
     }
 }

@@ -39,6 +39,10 @@ def _pagination_window(page: int, total_pages: int, width: int = 7) -> list[int]
 
 @main_bp.route('/')
 def index():
+    return render_template('landing.html')
+
+@main_bp.route('/pokedex')
+def pokedex():
     return render_template('index.html')
 
 
