@@ -13,6 +13,17 @@
             document.documentElement.setAttribute('data-theme', theme);
         })();
     </script>
+    <!-- Custom menu hover effect -->
+    <style>
+        .menu-hover-link {
+            transition: color 0.2s ease-in-out, transform 0.2s ease-in-out;
+        }
+        .menu-hover-link:hover {
+            color: #87cefa !important; /* Light sky blue */
+            transform: translateY(-2px);
+        }
+    </style>
+    
 </head>
 <body class="d-flex flex-column min-vh-100 pokedex-body">
     <div id="page-loading" class="page-loading d-none" aria-live="polite" aria-busy="false" role="status">
@@ -64,17 +75,17 @@
                 <div class="collapse navbar-collapse mt-3" id="navbarNav">
                     <ul class="navbar-nav flex-row flex-wrap gap-3 me-auto mb-3 justify-content-center justify-content-md-start">
                         <li class="nav-item">
-                            <a class="nav-link text-white fw-bold" href="{{ url_for('main.index') }}">
+                            <a class="nav-link text-white fw-bold menu-hover-link" href="{{ url_for('main.index') }}">
                                 <i class="bi bi-house-door-fill me-1"></i> {{ t('Início') }}
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link text-white fw-bold" href="{{ url_for('main.pokedex') }}">
+                            <a class="nav-link text-white fw-bold menu-hover-link" href="{{ url_for('main.pokedex') }}">
                                 <i class="bi bi-search me-1 text-warning"></i> {{ t('Pokédex') }}
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link text-white fw-bold" href="{{ url_for('main.teambuilder') }}">
+                            <a class="nav-link text-white fw-bold menu-hover-link" href="{{ url_for('main.teambuilder') }}">
                                 <i class="bi bi-tools me-1"></i> {{ t('Teambuilder') }}
                             </a>
                         </li>
