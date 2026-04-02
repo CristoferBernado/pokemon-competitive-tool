@@ -259,7 +259,7 @@ function simulateStrike(attackerStr, defenderStr) {
             // Estilização condicional
             if(maxPct >= 100) dmgText.style.color = '#ff4444'; // KO (Vermelho Sangue)
             else if(maxPct >= 50) dmgText.style.color = '#ffc107'; // 2HKO (Dourado)
-            else dmgText.style.color = '#fff'; // Dano pífio
+            else dmgText.style.color = 'var(--text-color)'; // Dano pífio (Adaptável Claro/Escuro)
         }
     }
 }
