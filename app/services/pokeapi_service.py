@@ -166,12 +166,20 @@ class PokeAPIService:
         return self._type_slugs_cache
 
     def resolve_search_mode(self, query: str) -> str:
-        """Define modo de busca: id (só dígitos), type (slug conhecido) ou name."""
+        """Define modo de busca: id (só dígitos), type (slug conhecido), multi_type ou name."""
         q = query.strip()
         if not q:
             return 'name'
         if q.isdigit():
             return 'id'
+            
+        if ',' in q:
+            parts = [p.strip().lower().replace(' ', '-') for p in q.split(',')]
+            slugs = self._get_type_slugs()
+            # If all comma-separated parts are valid type slugs, this is a multi-type search
+            if parts and all(p in slugs for p in parts if p):
+                return 'multi_type'
+
         slug = q.lower().replace(' ', '-')
         if slug in self._get_type_slugs():
             return 'type'
@@ -214,6 +222,22 @@ class PokeAPIService:
             data = self._make_request(f'type/{type_slug}')
             if data and 'pokemon' in data:
                 results = self._load_pokemon_list_for_type(data['pokemon'])
+                
+        elif search_type == 'multi_type':
+            types = [t.strip().lower().replace(' ', '-') for t in query.split(',')]
+            sets_of_urls = []
+            for t_slug in types[:2]:  # Limit hardcoded to 2 for performance scaling
+                data = self._make_request(f'type/{t_slug}')
+                if data and 'pokemon' in data:
+                    t_urls = {entry['pokemon']['url'].rstrip('/') for entry in data['pokemon']}
+                    sets_of_urls.append(t_urls)
+            
+            if sets_of_urls:
+                # Intersect to find elements that appear in ALL queried types (AND logic)
+                intersected_urls = set.intersection(*sets_of_urls)
+                # Reconstruct payload required by the list loader
+                entries = [{'pokemon': {'url': u}} for u in intersected_urls]
+                results = self._load_pokemon_list_for_type(entries)
 
         return results
 

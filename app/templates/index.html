@@ -16,12 +16,37 @@
                 <form action="{{ url_for('main.search') }}" method="get" class="mt-3 home-search-form site-search-form">
                     <div class="row g-3 align-items-stretch justify-content-center">
                         <div class="col-12 col-lg-8">
-                            <input type="text" class="form-control form-control-lg" 
+                            <input type="text" id="search-input" class="form-control form-control-lg" 
                                    name="q" placeholder="{{ t('Nome, número ou tipo…') }}"
                                    autocomplete="off">
                         </div>
                         <div class="col-12 col-lg-4 d-grid">
                             <button type="submit" class="btn btn-danger btn-lg home-search-btn">{{ t('Buscar') }}</button>
+                        </div>
+                        
+                        <!-- Toggle Busca Avançada -->
+                        <div class="col-12 mt-3 text-center">
+                            <a href="#advancedSearch" data-bs-toggle="collapse" class="text-decoration-none text-muted fw-bold">
+                                <i class="bi bi-sliders me-1"></i> {{ t('Busca Avançada') }} <i class="bi bi-chevron-down ms-1" style="font-size: 0.8rem;"></i>
+                            </a>
+                        </div>
+                    </div>
+                    
+                    <!-- Painel Expandível -->
+                    <div class="collapse mt-3" id="advancedSearch">
+                        <div class="card card-body bg-light border-0 shadow-sm rounded-4">
+                            <p class="mb-3 fw-bold text-center text-muted"><i class="bi bi-tags-fill me-1"></i> {{ t('Selecione até 2 tipagens:') }}</p>
+                            <div class="d-flex flex-wrap gap-2 justify-content-center px-1" id="type-selector-container">
+                                {% set types = ['normal', 'fire', 'water', 'electric', 'grass', 'ice', 'fighting', 'poison', 'ground', 'flying', 'psychic', 'bug', 'rock', 'ghost', 'dragon', 'dark', 'steel', 'fairy'] %}
+                                {% for type in types %}
+                                    <span class="type-badge-pill type-{{ type }} cursor-pointer" 
+                                          style="opacity: 0.4; transition: opacity 0.2s, transform 0.2s;" 
+                                          data-type="{{ type }}" 
+                                          onclick="toggleTypeSelection(this)">
+                                        {{ t(type|capitalize) }}
+                                    </span>
+                                {% endfor %}
+                            </div>
                         </div>
                     </div>
                 </form>
@@ -56,4 +81,42 @@
         </div>
     </div>
 </div>
+
+{% block scripts %}
+<style>
+    .cursor-pointer { cursor: pointer; user-select: none; }
+</style>
+<script>
+    let selectedTypes = [];
+    
+    function toggleTypeSelection(badge) {
+        const typeStr = badge.getAttribute('data-type');
+        
+        // If clicking a selected typing, deselect it
+        if (selectedTypes.includes(typeStr)) {
+            selectedTypes = selectedTypes.filter(t => t !== typeStr);
+            badge.style.opacity = '0.4';
+            badge.style.transform = 'scale(1)';
+        } else {
+            // Block selection if 2 are already selected
+            if (selectedTypes.length >= 2) {
+                // Could flashred here, but silently ignoring is graceful enough
+                return;
+            }
+            // Select it
+            selectedTypes.push(typeStr);
+            badge.style.opacity = '1';
+            badge.style.transform = 'scale(1.1)';
+        }
+        
+        // Update input field dynamically with "type1,type2"
+        const searchInput = document.getElementById('search-input');
+        if (selectedTypes.length > 0) {
+            searchInput.value = selectedTypes.join(',');
+        } else {
+            searchInput.value = '';
+        }
+    }
+</script>
+{% endblock %}
 {% endblock %}

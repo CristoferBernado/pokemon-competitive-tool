@@ -71,9 +71,15 @@ UI_TRANSLATIONS = {
         'Defensor': 'Defensor<br>↓',
         'Forte Total': 'Forte<br>Total',
         'Bem-vindo ao Bidoof Lab\'s': 'Bem-vindo ao Bidoof Lab\'s',
-        'Entrar': 'Entrar',
         'Apresentação': 'Apresentação',
-        'Pokédex': 'Pokédex'
+        'Pokédex': 'Pokédex',
+        'Busca Avançada': 'Busca Avançada',
+        'Selecione até 2 tipagens:': 'Selecione até 2 tipagens:',
+        'Normal': 'Normal', 'Fire': 'Fogo', 'Water': 'Água', 'Electric': 'Elétrico', 'Grass': 'Planta',
+        'Ice': 'Gelo', 'Fighting': 'Lutador', 'Poison': 'Venenoso', 'Ground': 'Terra', 'Flying': 'Voador',
+        'Psychic': 'Psíquico', 'Bug': 'Inseto', 'Rock': 'Pedra', 'Ghost': 'Fantasma', 'Dragon': 'Dragão',
+        'Dark': 'Sombrio', 'Steel': 'Aço', 'Fairy': 'Fada',
+        'footer_copyright': '&copy; Pokémon &copy; 1995-2024 Nintendo, Creatures Inc., GAME FREAK inc. Todos os direitos reservados. Pokémon, nomes de Pokémon, personagens e imagens são marcas registradas da Nintendo e da Pokémon Company.'
     },
     'en': {
         'Buscando Pokémon…': 'Searching Pokémon…',
@@ -147,8 +153,14 @@ UI_TRANSLATIONS = {
         'Defensor': 'Defender<br>↓',
         'Forte Total': 'Strong<br>Total',
         'Bem-vindo ao Bidoof Lab\'s': 'Welcome to Bidoof Lab\'s',
-        'Entrar': 'Enter',
         'Apresentação': 'Landing Page',
-        'Pokédex': 'Pokédex'
+        'Pokédex': 'Pokédex',
+        'Busca Avançada': 'Advanced Search',
+        'Selecione até 2 tipagens:': 'Select up to 2 typings:',
+        'Normal': 'Normal', 'Fire': 'Fire', 'Water': 'Water', 'Electric': 'Electric', 'Grass': 'Grass',
+        'Ice': 'Ice', 'Fighting': 'Fighting', 'Poison': 'Poison', 'Ground': 'Ground', 'Flying': 'Flying',
+        'Psychic': 'Psychic', 'Bug': 'Bug', 'Rock': 'Rock', 'Ghost': 'Ghost', 'Dragon': 'Dragon',
+        'Dark': 'Dark', 'Steel': 'Steel', 'Fairy': 'Fairy',
+        'footer_copyright': '&copy; Pokémon &copy; 1995-2024 Nintendo, Creatures Inc., GAME FREAK inc. All rights reserved. Pokémon, Pokémon names, characters and images are trademarks of Nintendo and The Pokémon Company.'
     }
 }

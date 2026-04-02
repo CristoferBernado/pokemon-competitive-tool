@@ -87,21 +87,29 @@ body.pokedex-body::before {
     border-bottom: 1px solid var(--border-color) !important;
 }
 
-/* Kalos Bezels */
+/* Kalos Bezels - Skeuomorphic Design */
 .pokedex-bezel {
-    background-color: var(--kalos-red);
+    background: linear-gradient(to bottom, #ff4a4a 0%, var(--kalos-red) 40%, var(--kalos-red-dark) 100%);
     height: 60px;
     position: relative;
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
     z-index: 1000;
 }
 
 .pokedex-bezel.top {
-    border-bottom: 3px solid var(--kalos-red-dark);
+    border-bottom: 4px solid #8e0000;
+    box-shadow: 
+        inset 0 8px 12px rgba(255, 255, 255, 0.35), /* Plastic glare on top edge */
+        inset 0 -5px 12px rgba(0, 0, 0, 0.45),      /* Curvature shading */
+        0 12px 25px rgba(0, 0, 0, 0.65);            /* Heavy shadow projected onto screen */
 }
 
 .pokedex-bezel.bottom {
-    border-top: 3px solid var(--kalos-red-dark);
+    background: linear-gradient(to top, #ff4a4a 0%, var(--kalos-red) 40%, var(--kalos-red-dark) 100%);
+    border-top: 4px solid #8e0000;
+    box-shadow: 
+        inset 0 -8px 12px rgba(255, 255, 255, 0.35), 
+        inset 0 5px 12px rgba(0, 0, 0, 0.45),
+        0 -12px 25px rgba(0, 0, 0, 0.65);
 }
 
 .bezel-inner {
@@ -114,11 +122,37 @@ body.pokedex-body::before {
     align-items: center;
 }
 
-.camera-dot { width: 6px; height: 6px; background: #222; border-radius: 50%; position: absolute; top: 10px; }
-.cutout-top, .cutout-bottom { position: absolute; width: 200px; height: 35px; background: #111; border: 2px solid var(--kalos-red-dark); }
-.cutout-top { top: -5px; border-radius: 0 0 100px 100px; }
-.cutout-bottom { bottom: -5px; border-radius: 100px 100px 0 0; }
-.charge-port { width: 40px; height: 4px; background: #333; border-radius: 2px; position: absolute; bottom: 12px; }
+/* Skeuomorphic Details (Lenses, Metallic Rims & Indentations) */
+.camera-dot { 
+    width: 12px; height: 12px; 
+    background: radial-gradient(circle at 3px 3px, #87ceeb, #0a0a0a 70%); 
+    border-radius: 50%; 
+    position: absolute; 
+    top: 24px; 
+    left: 20px;
+    border: 1px solid #000;
+    box-shadow: 0 1px 1px rgba(255,255,255,0.4), inset 0 -2px 4px rgba(0,0,0,0.8);
+}
+
+.cutout-top, .cutout-bottom { 
+    position: absolute; 
+    width: 220px; height: 35px; 
+    background: linear-gradient(to bottom, #111, #000); 
+    border: 2px solid #666; /* Metallic Rim reflection */
+    box-shadow: inset 0 5px 15px rgba(0,0,0,0.9), 0 1px 1px rgba(255,255,255,0.3);
+}
+.cutout-top { top: 0; border-top: none; border-radius: 0 0 110px 110px; }
+.cutout-bottom { bottom: 0; border-bottom: none; border-radius: 110px 110px 0 0; }
+
+.charge-port { 
+    width: 45px; height: 8px; 
+    background: #0d0d0d; 
+    border-radius: 4px; 
+    position: absolute; 
+    bottom: 15px;
+    box-shadow: inset 0 3px 6px rgba(0,0,0,1), 0 1px 1px rgba(255,255,255,0.4);
+    border: 1px solid #333;
+}
 
 /* Side Bezels Wrapper */
 .pokedex-device-body {

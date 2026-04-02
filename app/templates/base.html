@@ -19,7 +19,8 @@
             transition: color 0.2s ease-in-out, transform 0.2s ease-in-out;
         }
         .menu-hover-link:hover {
-            color: #87cefa !important; /* Light sky blue */
+            color: #ffdf00 !important; /* Golden Neon */
+            text-shadow: 0 0 8px rgba(255, 215, 0, 0.8), 0 0 16px rgba(255, 215, 0, 0.5);
             transform: translateY(-2px);
         }
     </style>
@@ -39,7 +40,6 @@
     <!-- Kalos Pokedex Top Bezel -->
     <div class="pokedex-bezel top">
         <div class="bezel-inner">
-            <div class="camera-dot"></div>
             <div class="cutout-top"></div>
         </div>
     </div>
@@ -73,7 +73,7 @@
                 </div>
 
                 <div class="collapse navbar-collapse mt-3" id="navbarNav">
-                    <ul class="navbar-nav flex-row flex-wrap gap-3 me-auto mb-3 justify-content-center justify-content-md-start">
+                    <ul class="navbar-nav flex-row flex-wrap gap-3 ms-auto mb-3 justify-content-center justify-content-lg-end w-100">
                         <li class="nav-item">
                             <a class="nav-link text-white fw-bold menu-hover-link" href="{{ url_for('main.index') }}">
                                 <i class="bi bi-house-door-fill me-1"></i> {{ t('Início') }}
@@ -103,7 +103,7 @@
 
         <footer class="site-footer text-white text-center mt-auto pokedex-footer">
             <div class="container py-3">
-                <p class="mb-0 small">&copy; Pokémon &copy; 1995-2024 Nintendo, Creatures Inc., GAME FREAK inc. Todos os direitos reservados. Pokémon, nomes de Pokémon, personagens e imagens são marcas registradas da Nintendo e da Pokémon Company.</p>
+                <p class="mb-0 small">{{ t('footer_copyright')|safe }}</p>
             </div>
         </footer>
     </div>
