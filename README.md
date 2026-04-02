@@ -63,6 +63,13 @@ O projeto é voltado para jogadores competitivos que precisam analisar:
 - **Tabela de Cobertura Ofensiva**: mostra quais tipos defensores cada Pokémon do time cobre bem
 - Escala de cores para totais de fraquezas, resistências e força ofensiva
 
+### ⚔️ Calculadora de Dano (1v1)
+- Lógica focada em simular duelos reais do competitivo (Gen 9 - Scarlet/Violet).
+- Interface de 3 colunas baseada no layout do Pokémon Showdown.
+- **Integração em tempo real**: busca dados biológicos de HP, IVs, Natures, Base Stats e converte os Totais matematicamente.
+- **Smart Movesets**: limita as dicas de auto-completar aos golpes que o personagem pode legalmente aprender.
+- **Equação Master de Dano**: resolve automaticamente Base Power, STAB, Type Weakness e a Rolagem RNG resultando nas %.
+
 ### 🎨 Interface Visual
 - Tema **Pokédex Kalos**: bezels vermelhos no topo e base, navbar vermelha
 - **Dark Mode** (padrão) com fundo `bg-dark.jpg`
@@ -124,6 +131,7 @@ pokemon-api/
     │   ├── search_results.html     # Resultados de busca
     │   ├── pokemon_detail.html     # Detalhe do Pokémon
     │   ├── teambuilder.html        # Ferramenta de montagem de times
+    │   ├── damage_calculator.html  # Calculadora Competitiva (1v1)
     │   ├── 404.html                # Página de erro 404
     │   └── 500.html                # Página de erro 500
     │
@@ -133,6 +141,7 @@ pokemon-api/
         ├── js/
         │   ├── main.js                     # Autocomplete, loading, theme toggle
         │   ├── teambuilder.js              # Lógica completa do teambuilder
+        │   ├── damage_calculator.js        # Engine Matemática (Gen 9), API Fetches Automáticos
         │   └── type_search_pagination.js   # Paginação frontend para busca por tipo
         └── img/
             ├── favicon.png
@@ -193,6 +202,7 @@ SECRET_KEY=sua-chave-secreta-aqui
 | `/search?q=<termo>&page=<n>` | GET | Resultados paginados |
 | `/pokemon/<id>` | GET | Página de detalhes do Pokémon |
 | `/teambuilder` | GET | Ferramenta de Teambuilder |
+| `/damage-calculator` | GET | Calculadora de Dano Dinâmica (One vs One) |
 
 ---
 

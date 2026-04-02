@@ -38,6 +38,7 @@ O projeto segue o padrão **MVC adaptado para Flask**:
 │  ┌──────────────────────────────────────────────┐   │
 │  │               routes.py (Blueprint)           │   │
 │  │  / · /search · /pokemon/<id> · /teambuilder  │   │
+│  │  /damage-calculator                          │   │
 │  │  /api/pokemon/search · /api/pokemon/autocomplete│  │
 │  └──────────────┬───────────────────────────────┘   │
 │                 │                                    │
@@ -278,6 +279,10 @@ Fluxo:
 
 Renderiza `teambuilder.html` passando `ALL_TYPES` e `DEFENSE_CHART` como variáveis de template (injetadas em `<script>` como JSON).
 
+#### `GET /damage-calculator`
+
+Renderiza `damage_calculator.html` injetando arrays locais de Pokémons e Types para alimentar cache. Interface standalone delegada totalmente ao Vanilla JS.
+
 ### Rotas de API (JSON)
 
 #### `GET /api/pokemon/search?q=<query>`
@@ -317,6 +322,8 @@ base.html                       ← layout raiz
 ├── pokemon_detail.html
 ├── teambuilder.html
 │   └── [script: teambuilder.js]
+├── damage_calculator.html
+│   └── [script: damage_calculator.js]
 ├── 404.html
 └── 500.html
 ```
@@ -603,7 +610,39 @@ Usuário digita "bulba" no slot 1
 
 ---
 
-## 10. Sistema de Cache
+## 10. Fluxo de Dados — Calculadora de Dano (Gen 9)
+
+```
+Usuário abre /damage-calculator
+→ Flask renderiza interface 3-Colunas injectando ALL_NAMES e TYPES.
+→ JS: initAutocomplete(), initTypeSelects()
+
+Usuário escolhe "Charizard" em P1
+→ input trigger → GET /api/v2/pokemon/charizard
+→ Auto-Fill Base Stats (HP, Atk, Def, SpA, SpD, Spe)
+→ Limpeza das EVs parciais.
+→ Popula Dropdown Natures (Modest, Adamant...)
+→ Guarda `data.moves` no cache window.cachedMoves['p1']
+→ JS re-calcula o STATUS TOTAL utilizando equação da Geração 9 (Nível 100).
+
+Usuário digita golpe no Slot 1
+→ Autocomplete varre `window.cachedMoves['p1']` filtrando golpes legais.
+→ Usuário fixa "Fire Blast"
+→ GET /api/v2/move/fire-blast 
+→ JS capta `power` (110) e injeta no form, setando category para "Special".
+
+Engine Matemática dispara simulateStrike('p1', 'p2'):
+→ 1. Detecta tipo da colisão (Special puxa SpA contra SpD do P2).
+→ 2. Executa função Base_Damage = Floor(((2 * Lvl / 5 + 2) * BP * A/D) / 50) + 2
+→ 3. Aplica TYPE_CHART (x2 se grass, x0.5 se water).
+→ 4. Aplica STAB (x1.5 se move type == attacker type).
+→ 5. Estoca rolagem min (85%) e max (100%).
+→ Output projetado no #main-result com color scaling crítico.
+```
+
+---
+
+## 11. Sistema de Cache
 
 ### Flask-Caching (`SimpleCache`)
 
@@ -624,7 +663,7 @@ Usuário digita "bulba" no slot 1
 
 ---
 
-## 11. Configuração e Variáveis de Ambiente
+## 12. Configuração e Variáveis de Ambiente
 
 **Arquivo:** `config.py`
 
@@ -648,7 +687,7 @@ SECRET_KEY=sua-chave-secreta-segura
 
 ---
 
-## 12. Testes
+## 13. Testes
 
 **Diretório:** `tests/`
 **Frameworks:** `pytest` 7.4.3 + `pytest-flask` 1.2.0
@@ -666,7 +705,7 @@ pytest-flask==1.2.0
 
 ---
 
-## 13. Decisões de Design
+## 14. Decisões de Design
 
 ### Por que paginação frontend para buscas por tipo?
 

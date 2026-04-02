@@ -48,6 +48,7 @@ run.py
 | `/search?q=` | `search_results.html` | Grid de cards de resultado com paginação |
 | `/pokemon/<id>` | `pokemon_detail.html` | Artwork + stats + habilidades + type defenses |
 | `/teambuilder` | `teambuilder.html` | Inputs de time + tabelas de cobertura defensiva/ofensiva |
+| `/damage-calculator`| `damage_calculator.html`| Calculadora de Danos (1v1) tipo Showdown |
 | 404 / 500 | `404.html` / `500.html` | Páginas de erro |
 
 Todos herdam de `base.html`, que provê:
@@ -112,6 +113,12 @@ Todos herdam de `base.html`, que provê:
 - `renderOffensiveTable()` — para cada tipo defensor × 6 slots: calcula o melhor multiplicador dos tipos do Pokémon como atacante
 - Funções de scale: `getWeakScaleClass()`, `getResistScaleClass()` — mapeiam `count` para classes CSS de cor
 - Dados injetados pelo template: `const ALL_TYPES = [...]` e `const DEFENSE_CHART = {...}`
+
+### `damage_calculator.js`
+- Responsável pelas fórmulas de dano oficiais restritas da Geração 9 para encontros (1v1).
+- Extração de *Base Stats*, preenchimento ativo e re-calculagem baseada em modificadores de Natures EVs e IVs.
+- `window.cachedMoves` e `initMoveAutocomplete` fornecem uma janela estrita de sugestões de Ataques lidos da PokeAPI apenas validáveis para a tipagem legal. 
+- Transforma Categorias de Dano (Physical/Special) e consulta Hardcoded Chart Constants (`TYPE_CHART`) para ditar resultados fracos, letais ou absurdos em letreiros numéricos formatáveis no Header (`simulateStrike()`).
 
 ### `type_search_pagination.js`
 - Ativado quando `type_search_frontend_pagination == true` (busca por tipo)
