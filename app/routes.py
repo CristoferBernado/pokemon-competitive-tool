@@ -168,6 +168,18 @@ def teambuilder():
         defense_chart=DEFENSE_CHART,
     )
 
+@main_bp.route('/damage-calculator')
+def damage_calculator():
+    # Pass all pokemon names for the autocomplete scripts on the UI
+    service = PokeAPIService()
+    all_names = service.get_all_pokemon_names()
+    return render_template(
+        'damage_calculator.html',
+        all_pokemon_names=all_names,
+        all_types=ALL_TYPES,
+        defense_chart=DEFENSE_CHART,
+    )
+
 
 @main_bp.route('/api/pokemon/search')
 def api_search():
