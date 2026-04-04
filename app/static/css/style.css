@@ -63,7 +63,7 @@ body.pokedex-body::before {
 }
 
 /* Global Card Theming */
-.card {
+.card, .modal-content {
     background-color: var(--card-bg) !important;
     border-color: var(--border-color) !important;
     color: var(--text-color);

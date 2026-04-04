@@ -26,6 +26,7 @@ class Pokemon:
     weight: int
     abilities: List[Dict[str, Any]]
     base_experience: int
+    moves: List[Dict[str, str]] = field(default_factory=list)
     hp: int = 0
     attack: int = 0
     species_url: Optional[str] = None
@@ -50,8 +51,13 @@ class Pokemon:
         sprites = data.get('sprites') or {}
         other = sprites.get('other') or {}
         official = (other.get('official-artwork') or {}).get('front_default')
+        showdown = (other.get('showdown') or {}).get('front_default')
+        home = (other.get('home') or {}).get('front_default')
         front = sprites.get('front_default')
         species = data.get('species') or {}
+        
+        # Fallback for newer mons / megas that might not have a simple front_default sprite
+        sprite_fallback = front or showdown or official or home
         
         # Stats extraction
         stats_dict = {
@@ -67,16 +73,30 @@ class Pokemon:
                 'is_hidden': bool(a.get('is_hidden')),
                 'description': '',
             })
+            
+        moves_data = []
+        for m in data.get('moves') or []:
+            move_info = m.get('move', {})
+            slug = move_info.get('name', '')
+            if slug:
+                moves_data.append({
+                    'name': slug.replace('-', ' ').title(),
+                    'slug': slug
+                })
+        # Sort by name
+        moves_data.sort(key=lambda x: x['name'])
+        
         return cls(
             id=data['id'],
             name=data['name'].replace('-', ' ').title(),
             types=[t['type']['name'] for t in data.get('types') or []],
-            sprite_url=front,
+            sprite_url=sprite_fallback,
             official_artwork_url=official or front,
             height=(data.get('height') or 0) / 10,
             weight=(data.get('weight') or 0) / 10,
             abilities=ability_rows,
             base_experience=data.get('base_experience') or 0,
+            moves=moves_data,
             hp=stats_dict.get('hp', 0),
             attack=stats_dict.get('attack', 0),
             species_url=species.get('url'),

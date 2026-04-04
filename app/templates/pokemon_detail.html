@@ -29,6 +29,12 @@
                 <p><strong>{{ t('Altura') }}:</strong> {{ pokemon.height }}m</p>
                 <p><strong>{{ t('Peso') }}:</strong> {{ pokemon.weight }}kg</p>
                 <p><strong>{{ t('Experiência Base') }}:</strong> {{ pokemon.base_experience }}</p>
+                
+                {% if pokemon.moves %}
+                <button type="button" class="btn btn-pokemon btn-primary mt-3 w-100" data-bs-toggle="modal" data-bs-target="#movesModal">
+                    <i class="bi bi-list-ul"></i> {{ t('Ver Golpes (Moves)') }}
+                </button>
+                {% endif %}
             </div>
         </div>
     </div>
@@ -148,5 +154,166 @@
             </div>
         </div>
     </div>
+{% endblock %}
+
+{% block modals %}
+{% if pokemon.moves %}
+<!-- Modal de Movimentos -->
+<div class="modal fade" id="movesModal" tabindex="-1" aria-labelledby="movesModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="movesModalLabel">{{ t('Golpes que') }} {{ pokemon.name }} {{ t('aprende') }}</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="{{ t('Fechar') }}"></button>
+            </div>
+            <div class="modal-body p-0">
+                <ul class="list-group list-group-flush" id="moves-list">
+                    {% for move in pokemon.moves %}
+                    <li class="list-group-item move-item" data-moveslug="{{ move.slug }}">
+                        <div class="d-flex justify-content-between align-items-start w-100">
+                            <!-- Esquerda: Informações Principais -->
+                            <div class="d-flex flex-column" style="max-width: 65%;">
+                                <div class="d-flex align-items-center gap-2 flex-wrap">
+                                    <span class="move-type-badge text-center" style="min-width: 70px;">
+                                        <span class="spinner-border spinner-border-sm text-secondary" role="status"></span>
+                                    </span>
+                                    <span class="move-category d-flex align-items-center" style="min-width: 32px; height: 14px;"></span>
+                                    <span class="fw-bold">{{ move.name }}</span>
+                                </div>
+                                <div class="move-description mt-1 text-muted" style="font-size: 0.85rem; display: none;"></div>
+                            </div>
+                            
+                            <!-- Direita: Status -->
+                            <div class="move-stats d-flex gap-3 text-center ms-2" style="display: none !important; font-size: 0.85rem;">
+                                <div class="d-flex flex-column text-start">
+                                    <span class="text-muted" style="font-size: 0.70rem;">{{ t('Power') }}</span>
+                                    <strong class="move-power text-info">-</strong>
+                                </div>
+                                <div class="d-flex flex-column text-start">
+                                    <span class="text-muted" style="font-size: 0.70rem;">{{ t('Accuracy') }}</span>
+                                    <strong class="move-accuracy text-info">-</strong>
+                                </div>
+                                <div class="d-flex flex-column text-start">
+                                    <span class="text-muted" style="font-size: 0.70rem;">{{ t('PP') }}</span>
+                                    <strong class="move-pp text-info">-</strong>
+                                </div>
+                            </div>
+                        </div>
+                    </li>
+                    {% endfor %}
+                </ul>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">{{ t('Fechar') }}</button>
+            </div>
+        </div>
+    </div>
 </div>
+{% endif %}
+{% endblock %}
+
+{% block scripts %}
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        const movesModalEl = document.getElementById('movesModal');
+        if (!movesModalEl) return;
+        
+        let fetchedMoves = false;
+        
+        movesModalEl.addEventListener('show.bs.modal', () => {
+            if (fetchedMoves) return;
+            fetchedMoves = true;
+            
+            const items = document.querySelectorAll('.move-item');
+            const userLang = "{{ g.lang if g.lang else 'pt' }}";
+            const fallbackLangs = [userLang, "pt-BR", "pt", "es", "en"];
+            
+            const fetchBatches = async () => {
+                for(let i = 0; i < items.length; i++) {
+                    const item = items[i];
+                    const slug = item.getAttribute('data-moveslug');
+                    const badgeContainer = item.querySelector('.move-type-badge');
+                    const descContainer = item.querySelector('.move-description');
+                    const catContainer = item.querySelector('.move-category');
+                    
+                    try {
+                        const response = await fetch(`https://pokeapi.co/api/v2/move/${slug}`);
+                        if(!response.ok) throw new Error();
+                        const data = await response.json();
+                        
+                        // Tipagem
+                        const typeName = data.type.name;
+                        badgeContainer.innerHTML = `<span class="type-badge-pill type-${typeName} d-block w-100">${typeName.substring(0,3).toUpperCase()}</span>`;
+                        
+                        // Ícone Categoria
+                        const damageClass = data.damage_class ? data.damage_class.name : 'status';
+                        const catIconMap = {
+                            'physical': `<svg viewBox="0 0 36 16" style="height: 24px; width: 54px; border-radius: 4px; box-shadow: 0 2px 4px rgba(0,0,0,0.2);" title="Physical"><rect width="36" height="16" rx="2" fill="#db4848"/><path d="M18 2 L19.5 5.5 L24 5.5 L20.5 8.5 L22 13 L18 10 L14 13 L15.5 8.5 L12 5.5 L16.5 5.5 Z" fill="#fbb51a" stroke="#ffeb3b" stroke-width="0.5"/></svg>`,
+                            'special': `<svg viewBox="0 0 36 16" style="height: 24px; width: 54px; border-radius: 4px; box-shadow: 0 2px 4px rgba(0,0,0,0.2);" title="Special"><rect width="36" height="16" rx="2" fill="#3a6b8e"/><circle cx="18" cy="8" r="5" fill="none" stroke="#ffffff" stroke-width="1.5"/><circle cx="18" cy="8" r="2.5" fill="#ffffff"/></svg>`,
+                            'status': `<svg viewBox="0 0 36 16" style="height: 24px; width: 54px; border-radius: 4px; box-shadow: 0 2px 4px rgba(0,0,0,0.2);" title="Status"><rect width="36" height="16" rx="2" fill="#7e8c9b"/><circle cx="18" cy="8" r="5" fill="none" stroke="#ffffff" stroke-width="1"/><path d="M18 3 A5 5 0 0 1 18 13 A2.5 2.5 0 0 0 18 8 A2.5 2.5 0 0 1 18 3" fill="#ffffff"/><circle cx="18" cy="5.5" r="1.2" fill="#7e8c9b"/><circle cx="18" cy="10.5" r="1.2" fill="#ffffff"/></svg>`
+                        };
+                        
+                        catContainer.innerHTML = catIconMap[damageClass] || catIconMap['status'];
+                        
+                        // Status Power / Acc / PP
+                        const pwr = data.power !== null ? data.power : '-';
+                        const acc = data.accuracy !== null ? data.accuracy + '%' : '-';
+                        const pp = data.pp !== null ? data.pp : '-';
+                        
+                        item.querySelector('.move-power').textContent = pwr;
+                        item.querySelector('.move-accuracy').textContent = acc;
+                        item.querySelector('.move-pp').textContent = pp;
+                        item.querySelector('.move-stats').style.setProperty('display', 'flex', 'important');
+                        
+                        // Descrição
+                        let effectText = "";
+                        const flavorEntries = data.flavor_text_entries || [];
+                        if (flavorEntries.length > 0) {
+                            // Tenta português nativo primeiro (raro na PokeAPI)
+                            let ptEntry = flavorEntries.find(e => e.language.name === 'pt' || e.language.name === 'pt-BR');
+                            
+                            if (ptEntry) {
+                                effectText = ptEntry.flavor_text.replace(/\r?\n|\r|\f/g, " ");
+                            } else {
+                                // Pega o Inglês como base
+                                const enEntry = flavorEntries.find(e => e.language.name === 'en') || flavorEntries[0];
+                                const baseText = enEntry.flavor_text.replace(/\r?\n|\r|\f/g, " ");
+                                
+                                if (userLang.startsWith('pt')) {
+                                    // Traduz do inglês para o Português via Google Tradutor (Sem Chave)
+                                    try {
+                                        const translateUrl = `https://translate.googleapis.com/translate_a/single?client=gtx&sl=en&tl=pt&dt=t&q=${encodeURIComponent(baseText)}`;
+                                        const tRes = await fetch(translateUrl);
+                                        if (!tRes.ok) throw new Error("Translation failed");
+                                        const tData = await tRes.json();
+                                        effectText = tData[0].map(item => item[0]).join('');
+                                    } catch(e) {
+                                        // Em caso de falha de rate-limit, exibe inglês mesmo ou o espanhol
+                                        const esEntry = flavorEntries.find(e => e.language.name === 'es') || enEntry;
+                                        effectText = esEntry.flavor_text.replace(/\r?\n|\r|\f/g, " ");
+                                    }
+                                } else {
+                                    const locEntry = flavorEntries.find(e => e.language.name === userLang) || enEntry;
+                                    effectText = locEntry.flavor_text.replace(/\r?\n|\r|\f/g, " ");
+                                }
+                            }
+                        } else {
+                            effectText = "{{ t('Descrição não disponível.') }}";
+                        }
+                        
+                        descContainer.innerHTML = effectText;
+                        descContainer.style.display = 'block';
+                    } catch(err) {
+                        badgeContainer.innerHTML = `<span class="badge bg-secondary d-block w-100">?</span>`;
+                    }
+                    
+                    // Simple delay to not bombard the APIs aggressively
+                    await new Promise(resolve => setTimeout(resolve, 80));
+                }
+            };
+            
+            fetchBatches();
+        });
+    });
+</script>
 {% endblock %}
