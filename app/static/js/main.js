@@ -57,6 +57,15 @@ document.addEventListener('DOMContentLoaded', function() {
             icon.textContent = theme === 'dark' ? '☀️' : '🌙';
         }
     }
+    
+    // Hide autocomplete on click outside
+    document.addEventListener('click', (e) => {
+        const list = document.getElementById('search-suggestions');
+        const input = document.getElementById('search-input');
+        if (list && input && !list.contains(e.target) && e.target !== input) {
+            list.style.display = 'none';
+        }
+    });
 });
 
 async function fetchAutocomplete(query) {
@@ -73,7 +82,34 @@ async function fetchAutocomplete(query) {
 }
 
 function showSuggestions(suggestions) {
-    console.log('Sugestões:', suggestions);
+    const list = document.getElementById('search-suggestions');
+    if (!list) return;
+    
+    list.innerHTML = '';
+    
+    if (!suggestions || suggestions.length === 0) {
+        list.style.display = 'none';
+        return;
+    }
+    
+    suggestions.forEach(name => {
+        const li = document.createElement('li');
+        li.className = 'list-group-item list-group-item-action cursor-pointer text-capitalize';
+        li.style.backgroundColor = 'var(--card-bg, #fff)';
+        li.style.color = 'var(--text-color, #000)';
+        li.textContent = name;
+        
+        li.addEventListener('click', () => {
+            document.getElementById('search-input').value = name;
+            list.style.display = 'none';
+            // Auto submit
+            document.querySelector('.home-search-form').submit();
+        });
+        
+        list.appendChild(li);
+    });
+    
+    list.style.display = 'block';
 }
 
 document.querySelectorAll('.pokemon-card').forEach(card => {
