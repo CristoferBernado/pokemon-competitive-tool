@@ -29,10 +29,16 @@
                     <img id="inspector-sprite" src="" alt="Sprite" style="height: 40px; width: auto; object-fit: contain;">
                     <span id="inspector-name" class="fw-bold" style="font-size: 1.1rem;"></span>
                 </div>
-                <!-- Nature Dropdown -->
-                <select id="nature-selector" class="form-select form-select-sm w-auto shadow-none">
-                    <!-- Gerado no JS -->
-                </select>
+                <div class="d-flex gap-2">
+                    <!-- Ability Dropdown -->
+                    <select id="ability-selector" class="form-select form-select-sm w-auto shadow-none">
+                        <!-- Gerado no JS -->
+                    </select>
+                    <!-- Nature Dropdown -->
+                    <select id="nature-selector" class="form-select form-select-sm w-auto shadow-none">
+                        <!-- Gerado no JS -->
+                    </select>
+                </div>
             </div>
             
             <div class="d-flex justify-content-center">
@@ -42,7 +48,7 @@
                 </div>
             </div>
 
-            <!-- Stats Configuration Section -->
+                <!-- Stats Configuration Section -->
             <div id="inspector-stats-config" class="mt-3">
                 <div class="d-flex justify-content-between align-items-center mb-2 px-1">
                     <div class="d-flex align-items-center gap-2">
@@ -52,16 +58,18 @@
                     <span class="text-secondary" style="font-size: 0.85rem;" id="ev-total-text">Total: 0/510</span>
                 </div>
                 
-                <div class="d-flex justify-content-between text-secondary px-2 mt-3 mb-1" style="font-size: 0.8rem; font-weight: bold;">
-                    <span style="width: 40px;"></span>
-                    <span style="width: 50px; text-align: center;">EVs</span>
-                    <span style="flex-grow: 1; text-align: center;"></span>
-                    <span style="width: 45px; text-align: center;">IVs</span>
+                <div class="d-flex justify-content-between text-secondary p-1 mb-1" style="font-size: 0.8rem; font-weight: bold;">
+                    <span style="width: 55px;"></span>
+                    <span class="mx-1" style="width: 45px; text-align: center;">EVs</span>
+                    <span class="mx-2" style="flex-grow: 1;"></span>
+                    <span class="mx-1" style="width: 45px; text-align: center;">IVs</span>
                 </div>
                 
                 <div id="stats-sliders-container" class="d-flex flex-column gap-2">
                     <!-- Renderizado dinamicamente via JS (6 stats: HP, Atk, Def, SpA, SpD, Spe) -->
                 </div>
+                
+                <button id="export-showdown-btn" class="btn btn-outline-info btn-sm w-100 mt-3" style="border-radius: 8px;">Exportar para Pokémon Showdown</button>
             </div>
         </div>
     </div>
@@ -127,6 +135,24 @@
             </div>
         </div>
     </div>
+</div>
+{% endblock %}
+
+{% block modals %}
+<!-- Export Showdown Modal -->
+<div class="modal fade" id="exportShowdownModal" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content" style="background-color: var(--card-bg); border: 1px solid var(--border-color);">
+      <div class="modal-header border-bottom-0 pb-0">
+        <h5 class="modal-title">Sua Equipe (Showdown Format)</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body p-3">
+        <textarea id="export-showdown-textarea" class="form-control shadow-none" style="resize: none; font-family: monospace; font-size: 0.85rem;" rows="14" readonly></textarea>
+        <p class="text-secondary small mt-2 mb-0 text-center">Use <strong>CTRL+C</strong> para copiar o texto acima.</p>
+      </div>
+    </div>
+  </div>
 </div>
 {% endblock %}
 

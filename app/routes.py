@@ -204,7 +204,9 @@ def api_search():
             'defense': p.defense,
             'sp_atk': p.sp_atk,
             'sp_def': p.sp_def,
-            'speed': p.speed
+            'speed': p.speed,
+            'ability': p.abilities[0]['name'] if p.abilities else 'Unknown',
+            'abilities': [ab['name'] for ab in p.abilities] if p.abilities else []
         } for p in pokemons],
     })
 

@@ -7,6 +7,11 @@
         initInspector();
         renderDefensiveTable();
         renderOffensiveTable();
+        
+        const exportBtn = document.getElementById('export-showdown-btn');
+        if (exportBtn) {
+            exportBtn.addEventListener('click', exportShowdown);
+        }
     }
 
     function renderInputs() {
@@ -105,6 +110,8 @@
                         },
                         level: 100,
                         nature: 'Serious',
+                        ability: p.ability || 'Unknown',
+                        abilities: p.abilities || [],
                         ivs: { hp: 31, attack: 31, defense: 31, sp_atk: 31, sp_def: 31, speed: 31 },
                         evs: { hp: 0, attack: 0, defense: 0, sp_atk: 0, sp_def: 0, speed: 0 }
                     };
@@ -171,6 +178,15 @@
                 }
             });
         }
+        
+        const abSelect = document.getElementById('ability-selector');
+        if (abSelect) {
+            abSelect.addEventListener('change', (e) => {
+                if (activeInspectorSlot !== null && team[activeInspectorSlot]) {
+                    team[activeInspectorSlot].ability = e.target.value;
+                }
+            });
+        }
     }
 
     function updateVisualBar() {
@@ -219,6 +235,22 @@
         document.getElementById('inspector-sprite').src = p.sprite_url;
         document.getElementById('nature-selector').value = p.nature || 'Serious';
         
+        const abSel = document.getElementById('ability-selector');
+        if (abSel) {
+            abSel.innerHTML = '';
+            if (p.abilities && p.abilities.length > 0) {
+                p.abilities.forEach(ab => {
+                    const opt = document.createElement('option');
+                    opt.value = ab;
+                    opt.textContent = ab.split('-').map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(' ');
+                    if (p.ability === ab) opt.selected = true;
+                    abSel.appendChild(opt);
+                });
+            } else {
+                abSel.add(new Option('Unknown', 'Unknown'));
+            }
+        }
+        
         renderStatsConfig();
         drawInspectorRadar(slotIndex);
     }
@@ -253,8 +285,9 @@
             row.style.backgroundColor = 'rgba(128,128,128,0.15)';
             
             const nameEl = document.createElement('span');
-            nameEl.style.width = '42px';
+            nameEl.style.width = '55px';
             nameEl.style.fontSize = '0.85rem';
+            nameEl.style.whiteSpace = 'nowrap';
             nameEl.textContent = STAT_LABELS[stat];
             
             const evInp = document.createElement('input');
@@ -319,6 +352,83 @@
         });
         
         document.getElementById('ev-total-text').innerHTML = `Total: ${calculateTotalEvs(activeInspectorSlot)}/510`;
+    }
+
+    function exportShowdown() {
+        let txt = '';
+        for (let i = 0; i < 6; i++) {
+            const p = team[i];
+            if (!p) continue;
+            
+            const speciesName = p.name.split('-').map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(' ');
+            txt += `${speciesName}\n`;
+            
+            if (p.ability && p.ability.toLowerCase() !== 'unknown') {
+                const abilityName = p.ability.split('-').map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(' ');
+                txt += `Ability: ${abilityName}\n`;
+            }
+            
+            if (p.level && p.level !== 100) {
+                txt += `Level: ${p.level}\n`;
+            }
+            
+            if (p.types && p.types.length > 0) {
+                const tera = p.types[0];
+                const teraType = tera.charAt(0).toUpperCase() + tera.slice(1);
+                txt += `Tera Type: ${teraType}\n`;
+            }
+            
+            if (p.evs) {
+                let evParts = [];
+                const sdOrder = { hp: 'HP', attack: 'Atk', defense: 'Def', sp_atk: 'SpA', sp_def: 'SpD', speed: 'Spe' };
+                for (let k in sdOrder) {
+                    if (p.evs[k] > 0) evParts.push(`${p.evs[k]} ${sdOrder[k]}`);
+                }
+                if (evParts.length > 0) {
+                    txt += `EVs: ${evParts.join(' / ')}\n`;
+                }
+            }
+            
+            if (p.ivs) {
+                let ivParts = [];
+                const sdOrder = { hp: 'HP', attack: 'Atk', defense: 'Def', sp_atk: 'SpA', sp_def: 'SpD', speed: 'Spe' };
+                for (let k in sdOrder) {
+                    if (p.ivs[k] < 31) ivParts.push(`${p.ivs[k]} ${sdOrder[k]}`);
+                }
+                if (ivParts.length > 0) {
+                    txt += `IVs: ${ivParts.join(' / ')}\n`;
+                }
+            }
+            
+            if (p.nature && p.nature !== 'Serious') {
+                const natureName = p.nature.split('-').map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(' ');
+                txt += `${natureName} Nature\n`;
+            }
+            
+            txt += '\n';
+        }
+        
+        if (txt.trim() === '') {
+            alert("A equipe está vazia! Adicione Pokémon antes de exportar.");
+            return;
+        }
+        
+        const textArea = document.getElementById('export-showdown-textarea');
+        if (textArea) {
+            textArea.value = txt.trim();
+            
+            const modalEl = document.getElementById('exportShowdownModal');
+            const modalInstance = new bootstrap.Modal(modalEl);
+            
+            // Auto-select text once modal is visible
+            modalEl.addEventListener('shown.bs.modal', function onModalShown() {
+                textArea.select();
+                textArea.setSelectionRange(0, 99999); // Mobile support
+                modalEl.removeEventListener('shown.bs.modal', onModalShown);
+            });
+            
+            modalInstance.show();
+        }
     }
 
     function drawInspectorRadar(slotIndex) {
