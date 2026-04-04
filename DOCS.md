@@ -469,6 +469,7 @@ transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
 
 // 3. Theme Toggle
 //    - #theme-toggle click → toggle data-theme no <html>
+//    - Atualiza também o `data-bs-theme` para sincronizar dropdowns nativos do bootstrap!
 //    - localStorage.setItem('theme', newTheme)
 //    - updateThemeIcon() — atualiza ícone .theme-icon (se existir)
 
@@ -477,6 +478,11 @@ transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
 //        calcula ratio containerWidth / textWidth
 //        ajusta font-size para evitar overflow (mínimo 0.8rem)
 //    - Executado em DOMContentLoaded e window.resize
+
+// 5. showSuggestions() [Autocomplete Principal]
+//    - Renderiza a `ul#search-suggestions` fixada diretamente abaixo do search input (`col-12 col-lg-8`).
+//    - Otimizada usando `max-height` restritivos à caixa responsiva que empurra outros slots.
+//    - Realiza submit() de form automático ao clicar em sugestão.
 ```
 
 ### `teambuilder.js` (IIFE)
@@ -493,9 +499,16 @@ const team = [null, null, null, null, null, null];
 //   → click na sugestão → loadPokemonData()
 //     → GET /api/pokemon/search → popula team[i]
 //     → updateCoverage()
-//       → updateHeaders()         // sprites nos th.slot-header
+//       → updateHeaders()         // sprites nos th.slot-header (clicáveis para interagir com State Inspector)
 //       → renderDefensiveTable()  // 18 tipos × 6 slots, calcula mult defensivo
 //       → renderOffensiveTable()  // 18 tipos defensores × 6 slots, calcula melhor mult ofensivo
+
+// Máquina de Stats & EVs (State Inspector):
+//   → Usuário seleciona o Slot através do `updateHeaders` (o border pisca com var(--type-water) css-bind)
+//   → `openInspector(slotIndex)` injeta HTML da box flutuando por cima da tabela
+//   → `drawInspectorRadar(slotIndex)` desenha o hexágono SVG comparando TotalStats VS BaseStats usando SVGPolygon.
+//   → Mudanças the range/inputs nas caixas do inspector atualizam o payload `team[i].evs` e `team[i].ivs`. Limitadores bloqueiam soma global exceder 510.
+//   → O export trigger (botão showdown) encapsula array para modal cru `.txt` pronto para 'CTRL+C' ou 'Export'.
 ```
 
 **Cálculo defensivo** (por slot `i` e tipo atacante `moveType`):

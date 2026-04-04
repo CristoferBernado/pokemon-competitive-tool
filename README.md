@@ -42,7 +42,7 @@ O projeto é voltado para jogadores competitivos que precisam analisar:
 - Busca por **número da Pokédex** (ex: `25`, `006`)
 - Busca por **tipo** (ex: `fire`, `ghost`, `dragon`) — retorna todos os Pokémon daquele tipo
 - Detecção automática do modo de busca (`resolve_search_mode`)
-- **Autocomplete** em tempo real via API interna
+- **Autocomplete Interativo** em tempo real via API interna (com drop-down dropdown box contido)
 
 ### 📊 Detalhes do Pokémon
 - Arte oficial (official artwork) via PokeAPI
@@ -61,7 +61,8 @@ O projeto é voltado para jogadores competitivos que precisam analisar:
 - Sprites do Pokémon nos cabeçalhos das tabelas
 - **Tabela de Cobertura Defensiva**: mostra vulnerabilidades de todo o time a cada tipo ofensivo
 - **Tabela de Cobertura Ofensiva**: mostra quais tipos defensores cada Pokémon do time cobre bem
-- Escala de cores para totais de fraquezas, resistências e força ofensiva
+- **Stats Inspector Integrado**: Configuração manual de Level (1-100), EVs (0-252 com limite global de 510) e IVs (0-31), manipulando gráficos SVG Polygon em tempo real usando lógicas matemáticas idênticas a da nintendo.
+- **Integração Export-Ready**: Seletor dinâmico de Abilities customizadas e Natures, com motor the clonagem engatilhado via clique (Showdown Format).
 
 ### ⚔️ Calculadora de Dano (1v1)
 - Lógica focada em simular duelos reais do competitivo (Gen 9 - Scarlet/Violet).
@@ -72,8 +73,7 @@ O projeto é voltado para jogadores competitivos que precisam analisar:
 
 ### 🎨 Interface Visual
 - Tema **Pokédex Kalos**: bezels vermelhos no topo e base, navbar vermelha
-- **Dark Mode** (padrão) com fundo `bg-dark.jpg`
-- **Light Mode** com fundo `bg-light.jpg` (efeito blur)
+- Sincronia unificada nativa com formulários (`data-bs-theme`) para input colors readaptadas
 - Toggle de tema com sprites animados de **Solrock** (☀️) / **Lunatone** (🌙)
 - Cards com **glassmorphism** (backdrop-filter blur)
 - Animação de carregamento com **Pokébola giratória**

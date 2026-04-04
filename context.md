@@ -85,9 +85,8 @@ Todos herdam de `base.html`, que provê:
 ---
 
 ## Tema Dark/Light
-
 - Detectado por `data-theme` no `<html>`
-- Script inline no `<head>` do `base.html` aplica o tema salvo ANTES do render (sem flash)
+- Script inline no `<head>` do `base.html` aplica o tema salvo ANTES do render (sem flash) e força atualizaçao conjunta do atributo do bootstrap `data-bs-theme`
 - Toggle no navbar: botão `.light-dark-toggle` com sprites de **Solrock** (luz) e **Lunatone** (escuro)
 - Persistência: `localStorage.setItem('theme', newTheme)`
 - Fallback: `window.matchMedia('(prefers-color-scheme: dark)')`
@@ -98,19 +97,22 @@ Todos herdam de `base.html`, que provê:
 ## JavaScript — Arquivos e Responsabilidades
 
 ### `main.js`
-- Autocomplete global no input de busca (debounce 300ms, mín. 2 chars)
+- Autocomplete global no input de busca (debounce 300ms, mín. 2 chars) via `showSuggestions()`. Renderiza de forma orgânica um box `.list-group` que interage diretamente empurrando layout adjacente.
 - Loading overlay (`.page-loading`) ao submeter formulários `.site-search-form`
 - Theme toggle (click no `#theme-toggle`)
 - `window.fitPokemonNames()` — font scaling dinâmico para `.pokemon-name` que transbordam o card
 
 ### `teambuilder.js`
-- IIFE com estado `team[0..5]` (array de `{name, types, sprite_url}`)
+- IIFE com estado `team[0..5]` (array de `{name, types, sprite_url, stats, ivs, evs, level, nature, ability, abilities}`)
 - `renderInputs()` — cria 6 linhas `.tb-row` com input + caixa de autocomplete
 - `handleInput()` — debounce 300ms → `GET /api/pokemon/autocomplete`
 - `loadPokemonData()` — ao selecionar sugestão → `GET /api/pokemon/search` → popula `team[i]`
 - `updateCoverage()` → `updateHeaders()` + `renderDefensiveTable()` + `renderOffensiveTable()`
 - `renderDefensiveTable()` — para cada tipo ofensivo × 6 slots: calcula multiplicador combinado dos tipos do Pokémon
 - `renderOffensiveTable()` — para cada tipo defensor × 6 slots: calcula o melhor multiplicador dos tipos do Pokémon como atacante
+- **Stats Inspector API**: Hexágono SVG construído em tempo-real mapeando os vetores XY conforme input level 1-100, Natures e EVs/IVs manipulados (`drawInspectorRadar()`).
+- Controles com restrição global de EVs limitada à sintaxe "510" como em batalhas competitivas (`renderStatsConfig()`).
+- Exportação nativa copiada para Clipboard mapeando time completo num modal para importar no ambiente virtual Pokémon Showdown (`exportShowdown()`).
 - Funções de scale: `getWeakScaleClass()`, `getResistScaleClass()` — mapeiam `count` para classes CSS de cor
 - Dados injetados pelo template: `const ALL_TYPES = [...]` e `const DEFENSE_CHART = {...}`
 
