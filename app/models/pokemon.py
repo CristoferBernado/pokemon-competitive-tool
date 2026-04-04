@@ -29,6 +29,10 @@ class Pokemon:
     moves: List[Dict[str, str]] = field(default_factory=list)
     hp: int = 0
     attack: int = 0
+    defense: int = 0
+    sp_atk: int = 0
+    sp_def: int = 0
+    speed: int = 0
     species_url: Optional[str] = None
     generation: Optional[int] = None
     
@@ -99,6 +103,10 @@ class Pokemon:
             moves=moves_data,
             hp=stats_dict.get('hp', 0),
             attack=stats_dict.get('attack', 0),
+            defense=stats_dict.get('defense', 0),
+            sp_atk=stats_dict.get('special-attack', 0),
+            sp_def=stats_dict.get('special-defense', 0),
+            speed=stats_dict.get('speed', 0),
             species_url=species.get('url'),
             generation=None,
         )

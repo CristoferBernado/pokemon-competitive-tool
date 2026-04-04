@@ -199,6 +199,12 @@ def api_search():
             'name': p.name,
             'types': p.types,
             'sprite_url': p.sprite_url,
+            'hp': p.hp,
+            'attack': p.attack,
+            'defense': p.defense,
+            'sp_atk': p.sp_atk,
+            'sp_def': p.sp_def,
+            'speed': p.speed
         } for p in pokemons],
     })
 
